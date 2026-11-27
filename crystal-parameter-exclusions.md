@@ -142,6 +142,25 @@ square parameter, however large; this does not presume that 5 is the smaller
 of the two candidate parameters. The general uniqueness problem, for
 unrelated squareclasses and different quadratic fields, remains open.
 
+**Independent complete Lean proof.** The standalone file
+CrystalComplementComplete.lean proves the same unrestricted result by a
+somewhat different finite reduction. For \(q\ge32\), set
+\(R=2\Delta-q-2\), \(Z=8(q+1)a-8b+(q+2)^2+16\).
+We know \((q-3)a\le b\le qa\le a^2\) and \(Q^3\le4ab\), hence \(Q<2a\).
+Both \(Z\) and \(dQ\) lie in \([0,2R-1)\); expanding gives
+\(R^2-d(4(n+1)+Q)=Z-dQ\). The adjacent integer squares force
+\(R^2=d(4(n+1)+Q)\) exactly. In particular \(qQ\ge Z\ge8a\). Cubing
+this and using \(Q^3\le4q a^2\) yields \(128a\le q^4\), which already
+excludes \(r\ge5\). The checked row congruence now bounds \(q-4\le900\).
+For \(5\le q\le31\), the kernel proof instead uses the uniform cutoff
+\(n<10^{72}\): above it the irrational \(q\sqrt{qd}\) is within
+\(1/10000\) of an integer although its square is a nonsquare integer
+and its magnitude is below 1000. For every admissible small parameter,
+the recurrence exceeds the cutoff by row \(j=100\) (\(r=j+1\)).
+The remaining exact square tests are evaluated in the kernel. This proof
+takes the original predicate on the components as its input; its only
+import is the original Formal Conjectures module.
+
 ## Equal real quadratic fields
 
 No two distinct integral parameters \(q,Q>4\) with
@@ -266,6 +285,9 @@ in our earlier paper, which used Siegel.
 The following are checked in pinned Lean 4.33.1 with Formal Conjectures at
 9097e2f90e66d2f6244209cb1c07f7120d17ec53:
 
+* CrystalComplementComplete.lean: complete proofs of both the
+  same-squareclass and the complementary-squareclass exclusions for
+  genuine crystal pairs. The main theorem is OMA.CrystalLarge.no_complement.
 * CrystalSquareClass.lean: two genuine sorted decompositions with parameters
   in the same squareclass must be the identical pair (full theorem).
 * CrystalComplement.lean: integer_companion produces the integer \(V\);
@@ -276,8 +298,8 @@ The following are checked in pinned Lean 4.33.1 with Formal Conjectures at
   calculation uses the Lean kernel, independently of the Python certificate.
 
 From a checkout with the original UniqueCrystalComponents module built, run
-lake env lean on each attached Lean file. The complementary-squareclass
-**bounds and lattice reduction**, rank-one unit **interval separation**,
-and **genus-five analysis** are the mathematical arguments given here.
+lake env lean on each attached Lean file. The sharper paper cutoff
+\(4096n<q^{15}\), the equal-field **interval separation**, and the
+**genus-five analysis** are the mathematical arguments given here.
 The separate \(10^{38}\) search is a reproducible exhaustive program, not
 a theorem verified in Lean.
