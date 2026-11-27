@@ -6,6 +6,8 @@ $$\{0,1,3,7,15,31,63,127\}\pmod {248}.$$
 
 This is an exhaustive computer result, not a Lean theorem. [Fonollosa, §7](https://arxiv.org/html/2607.08366v2#S7) reports exact certification up to seven labels and search evidence through thirteen. The paper already proves the specified binary set works at the predicted minimum for all sizes; what is being checked here is the exclusion of **all other sets below that modulus**, and uniqueness at the extremal modulus.
 
+**Prior result.** Théo Nicolas Sitjar had already settled both eight and nine labels before this run, by two exhaustive searches: [paper, programs and logs](https://zenodo.org/records/24228247). The minima 248 and 504 are his published results. Our computation is an independent reproduction. It is not a new solution of those cases.
+
 ## How the search covers all sets
 
 1. Every subset of a valid set is valid: a competing multiset on a subset could be extended by one copy of every remaining label. Translation and multiplication by a unit preserve validity.
