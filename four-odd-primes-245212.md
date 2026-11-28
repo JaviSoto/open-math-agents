@@ -19,7 +19,26 @@ The first replay builds 499 Lean modules and can take hours; subsequent runs reu
 
 On that last five-prime support, write $n=3\cdot 5^a7^b11^c13^d$. The [Lean theorem on exponents](FiveExponentBounds245212.lean) gives $a\ge18,\ b\ge12,\ c\ge7,\ d\ge6$. Consequently $n$ is divisible by $3\cdot5^{18}7^{12}11^7 13^6$, about $1.49\times10^{37}$. To see where the bounds come from, fix one of the four larger primes $p$, and write $C=\prod_{q\ne p,\,q>3} q/(q-1)$. The normalized sum is at most a weighted average of $(7/6)x(p,e)+(2/3)y(p,e)\le11/6$ and $(7/6)x(p,e)C$. The second endpoint therefore has to reach 2. Checking it at each indicated lower bound minus one, and using monotonicity in the exponent, excludes every smaller exponent. The Lean theorem takes the original OEIS equality as its hypothesis.
 
-The same [Lean file](FiveExponentBounds245212.lean) shows that at least one exponent belongs to one of these short ranges: $18\le a\le71$, $12\le b\le47$, $7\le c\le27$, or $6\le d\le23$. In fact, already at $(72,48,28,24)$ the first product $(7/6)\prod x$ exceeds 2. Every $x$ increases with its exponent, and the second product is nonnegative. These ranges form 129 one-exponent cases; the other three exponents in each case still need to be handled.
+The same [Lean file](FiveExponentBounds245212.lean) shows that at least one exponent belongs to one of these short ranges: $18\le a\le71$, $12\le b\le47$, $7\le c\le27$, or $6\le d\le23$. In fact, already at $(72,48,28,24)$ the first product $(7/6)\prod x$ exceeds 2. Every $x$ increases with its exponent, and the second product is nonnegative. These ranges form 129 one-exponent cases.
+
+### Five primes: the exponent of three cannot be one
+
+Here the proof combines the above Lean results with a written bound and an exhaustive computation. **Any odd solution with exactly five distinct prime divisors must be divisible by nine.** The remaining case with $9\mid n$ is open.
+
+Use the [general integer-rounding height bound](prime-power-height-245212.md) with $k=5$, $B=13$: the largest exponent is at most 7072. To reproduce the number, the offset is 4992 and the slope is 160. Starting from 6,553,600, the successive bounds are 8672, 7232 and 7072; a further iteration leaves 7072. The general-rank height argument is a written proof, not part of the rank-four Lean certificate.
+
+If $p^e\parallel n$ and $m=n/p^e$, the original equality requires $W(m)\equiv(p-1)\sigma(m)\pmod {p^e}$. Indeed, modulo $p^e$, the geometric sum gives $(p-1)\sigma(p^e)\equiv-1$, and the weighted sum gives $(p-1)^2W(p^e)\equiv1$. For $n=3\cdot5^a7^b11^c13^d$ we can use the four constant moduli $5^{18},7^{12},11^7,13^6$, by the lower bounds proved above.
+
+For each of the 129 cases, fix a second exponent anywhere in its allowed range up to 7072. Denote the two unfixed primes by $r,s$. The congruence at $r$ is independent of its own exponent: with our two fixed exponents, it is a condition only on the exponent of $s$. The congruence at $s$ similarly constrains only the exponent of $r$. If either congruence has no permitted exponent, the entire box is impossible. The four overlapping families account for 911,625 boxes. Only 13 pass the first congruence and none passes both.
+
+| Prime assigned the short range | Boxes | Pass first congruence | Pass both |
+|---|---:|---:|---:|
+| 5 | 381,618 | 13 | 0 |
+| 7 | 254,412 | 0 | 0 |
+| 11 | 148,407 | 0 | 0 |
+| 13 | 127,188 | 0 | 0 |
+
+Two implementations independently rule out every box. The [standalone C++ replay](five_prime_replay_245212.cpp) uses the defining divisor sums by recurrence; it filters by a small modulus and then tests the full congruence directly, including zeros and noninvertible coefficients. Compile with a C++17 compiler supporting 128-bit integer multiplication: `c++ -std=c++17 -O2 five_prime_replay_245212.cpp -o /tmp/five-prime-replay && /tmp/five-prime-replay`. The [Python replay](five_prime_sieve_245212.py) instead uses a closed geometric formula and matches normalized residue pairs after removing common prime factors. Run it with each of the arguments 5, 7, 11, 13. This finite sieve has not been formalized in Lean.
 
 ## Reduction to ten boxes
 
