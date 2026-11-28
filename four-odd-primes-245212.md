@@ -40,6 +40,19 @@ For each of the 129 cases, fix a second exponent anywhere in its allowed range u
 
 Two implementations independently rule out every box. The [standalone C++ replay](five_prime_replay_245212.cpp) uses the defining divisor sums by recurrence; it filters by a small modulus and then tests the full congruence directly, including zeros and noninvertible coefficients. Compile with a C++17 compiler supporting 128-bit integer multiplication: `c++ -std=c++17 -O2 five_prime_replay_245212.cpp -o /tmp/five-prime-replay && /tmp/five-prime-replay`. The [Python replay](five_prime_sieve_245212.py) instead uses a closed geometric formula and matches normalized residue pairs after removing common prime factors. Run it with each of the arguments 5, 7, 11, 13. This finite sieve has not been formalized in Lean.
 
+### If the exponent at three is two
+
+The [Lean support theorem](FiveSquareThree245212.lean) starts from the original equality. With exactly five odd primes and $3^2\parallel n$, the support must be $3,5,7,q,r$. There are just four possibilities for $q$:
+
+| $q$ | Restriction on the last prime $r>q$ |
+|---:|---|
+| 11 | The cap argument gives no upper bound. |
+| 13 | $r<190$, hence $r\le181$. |
+| 17 | $r<41$, hence $r\le37$. |
+| 19 | $r<33$, hence $r\le31$. |
+
+Here $x(3,2)=34/27$ and $y(3,2)=13/27$. If the product of the four remaining prime caps is less than $27/17$, both endpoints of the interval bound are below 2. Applying this to the smallest possible primes beyond each proposed threshold gives the table; no upper bound on the exponents is used. These supports have not been excluded by this theorem.
+
 ## Reduction to ten boxes
 
 For $p^e\parallel n$ write $T(p^e)=(e+1)p^e$, $x(p,e)=W(p^e)/T(p^e)$ and $y(p,e)=\sigma(p^e)/T(p^e)$. All three divisor functions are multiplicative, so at a solution $\prod x+\prod y=2$. We have
