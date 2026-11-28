@@ -48,7 +48,7 @@ Keep **fourth_power_245212.py**, **odd_four_245212.py**, **odd_modular_245212.py
 
     python3 fourth_power_245212.py --unrestricted
 
-No packages or machine-specific data are required. Run without Python's `-O` (which disables assertions). A found equality or unfinished family stops the run. The Python arithmetic, height argument and combined conclusion are not kernel-certified; the prime-support bound and nonzero cofactor divisibility have separate Lean proofs. Work limits are per support; they are not number-theoretic cutoffs.
+No packages or machine-specific data are required. Run without Python's `-O` (which disables assertions). A found equality or unfinished family stops the run. The Python arithmetic and the combined conclusion are not kernel-certified. The prime-support bound, nonzero cofactor divisibility and [explicit rank-four exponent ceiling](HeightResearch245212.lean) have separate Lean proofs. Work limits are per support; they are not number-theoretic cutoffs.
 
 | Ordered first three primes | Largest allowed fourth prime | Boxes |
 |---|---:|---:|
