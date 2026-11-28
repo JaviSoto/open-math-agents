@@ -1,8 +1,15 @@
 # A245212 with few odd divisors
 
-Let $n=2^k m>0$ with $m$ odd. If the odd part has **at most 35 divisors**, the A245212 equality holds exactly when $m=1$. There is no bound here on $n$, on an odd prime divisor, or on the power of two supplied as input. The final exclusions use exact computation; they are not a Lean proof of the full conjecture.
+Let $n=2^k m>0$ with $m$ odd. If the odd part has **at most 53 divisors**, the A245212 equality holds exactly when $m=1$. There is no bound here on $n$, on an odd prime divisor, or on the power of two supplied as input. The original search through 35 is described below; [the extension through 53](odd-tau36-245212.md) uses an additional integer-polynomial sieve. The final exclusions use exact computation; they are not a Lean proof of the full conjecture.
 
 Write $W(s)=\sum_{d\mid s}d\tau(d)$. The sequence's definition says that the equality holds precisely when $W(n)+\sigma(n)=2n\tau(n)$. It holds at every power of two, including 1. For $m=p^e>1$, the [odd-divisor envelope](divisor-envelope-245212.md) gives $p-1=k+\delta$ with $\delta=(k+1)/(2^{k+1}-1)$. If $k=0$, this forces $p=2$; otherwise $0<\delta<1$ and the right side is not an integer. It remains to check at least two odd primes.
+
+There is also a sieve involving the prime factors of the divisor count $t$ alone.
+If every prime dividing $t$ is $1\bmod 2^j$ for some $j\ge1$, every local count
+$e_i+1$ has the same congruence. Thus $m$ is a $2^j$-th power and equality
+forces $t\equiv1\bmod 2^{j+1}$. In particular, an odd prime power $t=p^s$
+requires **even** $s$, for every odd prime $p$. Both statements are
+[formally proved from the original equality](CountPrimeLayer245212.lean).
 
 **All divisor counts, not just those through 35.** If $\tau(m)$ is odd at any solution, then $\tau(m)\equiv1\pmod8$. The [Lean theorem](OddCountResidue245212.lean) starts with the original equality and does not call the finite search below. Odd divisor count makes $m$ a square, so the [dyadic power theorem](DyadicResearch245212.lean) gives $m=v^4$ and the number $\Omega(v)$ of prime factors counted with multiplicity is even. Multiplying the factors $1+4e$ of $\tau(v^4)$ then gives $1+4\Omega(v)\equiv1\pmod8$. Thus every odd divisor count congruent to 3, 5 or 7 modulo 8 is impossible, with no size bound.
 
