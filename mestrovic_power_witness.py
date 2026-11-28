@@ -8,19 +8,44 @@ from argparse import ArgumentParser
 from math import comb, gcd
 
 
-def block_residue(p, blocks, exponent):
-    """Sum x^exponent over 0 <= x < p*blocks, modulo p^4."""
-    modulus = p**4
-    # x = residue + p*j. Terms of degree >= 4 in j vanish modulo p^4.
-    triangle = blocks * (blocks - 1) // 2
-    moments = (blocks, triangle, triangle * (2 * blocks - 1) // 3, triangle**2)
+def block_residue(p, blocks, exponent, precision=4):
+    """Sum x^exponent over 0 <= x < p*blocks, modulo p^precision."""
+    if min(p, blocks, exponent, precision) < 1:
+        raise ValueError("the block size, count, exponent and precision must be positive")
+    modulus = p**precision
+    # Telescoping (j+1)^(k+1)-j^(k+1) gives every block-index moment.
+    moments = []
     answer = 0
-    for k in range(min(exponent, 3) + 1):
-        coefficient = comb(exponent, k) * p**k * moments[k]
+    for k in range(min(exponent+1, precision)):
+        moment = (blocks**(k+1) - sum(comb(k+1, i)*s for i, s in enumerate(moments))) // (k+1)
+        moments.append(moment)
+        coefficient = comb(exponent, k) * p**k * moment
         reduced_modulus = modulus // gcd(coefficient, modulus)
         row = sum(pow(x, exponent - k, reduced_modulus) for x in range(p))
         answer += coefficient * row
     return answer % modulus
+
+
+def prime_powers(n):
+    p = 2
+    while p*p <= n:
+        a = 0
+        while n % p == 0:
+            a += 1
+            n //= p
+        if a:
+            yield p, a
+        p = 3 if p == 2 else p+2
+    if n > 1:
+        yield n, 1
+
+
+def cubic_test(n, half):
+    """Check the defining sum modulo every exact prime-power divisor of n^3."""
+    if n < 3 or (half and n % 2 == 0):
+        raise ValueError("the input must be at least 3, and odd for the half exponent")
+    e = (n-1)//2 if half else n-2
+    return [(p, a, block_residue(p, n//p, e, 3*a)) for p,a in prime_powers(n)]
 
 
 def check_pair(p, q, half=False):
@@ -44,6 +69,11 @@ def test():
             assert (direct, direct % p**4, direct % q**4) == (residue, a, b)
     for exponent in range(1, 7):
         assert block_residue(5, 7, exponent) == sum(x**exponent for x in range(35)) % 5**4
+    for n in (9, 25, 27, 45, 49, 75, 125, 441, 1331):
+        for half in (True, False):
+            e = (n-1)//2 if half else n-2
+            for p, a, residue in cubic_test(n, half):
+                assert residue == sum(pow(x, e, p**(3*a)) for x in range(1,n)) % p**(3*a)
 
 
 if __name__ == "__main__":
