@@ -20,7 +20,7 @@ As an application, an [exact segmented check](even_core_screen_245212.py) exclud
 
 ## No solution of the form $2^k q^2p$
 
-Here $p,q$ are distinct odd primes; neither prime nor the exponent $k\ge1$ is bounded in the statement. This part combines an analytic inequality with a finite exact calculation. The earlier [three-prime mixed theorem](divisor-balance-245212.md) already covers the subcases with $p=3$ or $q=3$.
+Here $p,q$ are distinct odd primes; neither prime nor the exponent $k\ge1$ is bounded in the statement. **The complete exclusion is now verified by the Lean kernel starting from the original OEIS equality.** The earlier [three-prime mixed theorem](divisor-balance-245212.md) already covers the subcases with $p=3$ or $q=3$.
 
 Substitute $u=q^2$, so $T=3q^2$, $W=3q^2+2q+1$ and $S=q^2+q+1$. Set $j=3k+1$. Expansion gives
 
@@ -36,4 +36,12 @@ For $k\ge6$, $15k+20\le2^{k+1}$ by induction from 6; the other two coefficients 
 
 Finally $W\le6q^2$, $S,T\le3q^2$, and therefore $C+K\le128q^4$. With $h=\lfloor\log_2 q\rfloor$ our logarithmic cutoff gives $k+1\le 23+8h$. For $h=20$, $12(23+8h)^2<2^h$. At every larger $h$ the linear factor increases by less than $6/5$, so its square increases by less than two; induction proves the same strict bound. If $q\ge2^{20}$ this contradicts $q<12(k+1)^2$. The small-$k$ case was already covered.
 
-The [finite replay](square_core_245212.py) checks all 82,024 odd primes $q<2^{20}$. It computes the quotient directly from the divisor functions at $2^k$ and $q^2$, without filtering by the resultant. Across 12,645,236 possible exponents, 12,645,053 had a positive denominator. **None had an integer quotient.** Run `python3 square_core_245212.py` without `-O`. The general resultant and logarithmic cutoff are kernel-checked; the final square-core exclusion uses the written tail bound and the Python replay.
+The [finite Python replay](square_core_245212.py) checks all 82,024 odd primes $q<2^{20}$. It computes the quotient directly from the divisor functions at $2^k$ and $q^2$, without filtering by the resultant. Across 12,645,236 possible exponents, 12,645,053 had a positive denominator. **None had an integer quotient.** Run `python3 square_core_245212.py` without `-O`.
+
+The independent Lean proof uses no primality sieve or Python verdict. The [analytic bound](SquareCoreBound245212.lean) and the [connection to the original OEIS equation](SquareSolution245212.lean) give $q<2^{20}$ and $1\le k\le174$. For each $k$, the [interval checker](SquareIntervals245212.lean) rejects an entire interval when its denominator is nonpositive or when its quotient lies strictly between two consecutive integers. The signs of the required quadratics are certified throughout the interval; inconclusive intervals are subdivided. The theorem `OMA.SquareIntervals245212.no_square_core` passed with only `propext`, `Classical.choice`, and `Quot.sound`.
+
+Keep the four Lean files linked above (including `EvenScreen245212.lean`) together with [the generator](verify_square_core_245212.py) and its [parallel compiler](verify_four_odd_245212.py). In the pinned project checkout with merged reductions #488 and #1376 built, run:
+
+    lake env python3 /absolute/path/to/verify_square_core_245212.py --jobs 6 --build /absolute/path/to/square-build
+
+The generator creates the finite row statements, not proofs from Python booleans. Each of the 174 cases is evaluated by Lean using `decide +kernel`. An interrupted replay resumes from source-fingerprinted objects. The entry-point theorem and its axiom report are checked again on every run.
