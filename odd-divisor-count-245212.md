@@ -1,6 +1,6 @@
 # A245212 with few odd divisors
 
-Let $n=2^k m>0$ with $m$ odd. If the odd part has **at most 53 divisors**, the A245212 equality holds exactly when $m=1$. There is no bound here on $n$, on an odd prime divisor, or on the power of two supplied as input. The original search through 35 is described below; [the extension through 53](odd-tau36-245212.md) uses an additional integer-polynomial sieve. The final exclusions use exact computation; they are not a Lean proof of the full conjecture.
+Let $n=2^k m>0$ with $m$ odd. If the odd part has **at most 71 divisors**, the A245212 equality holds exactly when $m=1$. There is no bound here on $n$, on an odd prime divisor, or on the power of two supplied as input. The original search through 35 is described below; [the extension through 53](odd-tau36-245212.md) uses an integer-polynomial sieve, and [the extension through 71](odd-count-sieve-245212.md) projects the last prime into small finite fields. The final exclusions use exact computation; they are not a Lean proof of the full conjecture.
 
 Write $W(s)=\sum_{d\mid s}d\tau(d)$. The sequence's definition says that the equality holds precisely when $W(n)+\sigma(n)=2n\tau(n)$. It holds at every power of two, including 1. For $m=p^e>1$, the [odd-divisor envelope](divisor-envelope-245212.md) gives $p-1=k+\delta$ with $\delta=(k+1)/(2^{k+1}-1)$. If $k=0$, this forces $p=2$; otherwise $0<\delta<1$ and the right side is not an integer. It remains to check at least two odd primes.
 

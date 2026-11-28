@@ -92,7 +92,7 @@ def surplus_polynomials(A,S,J,Q,H,e):
     return L,R
 
 
-def solve(t,k,exps,plan=False,window=None,audit=False):
+def solve(t,k,exps,plan=False,window=None,audit=False,odd_residue=None,terminal_primes=None):
     c=Counter()
     power=1<<k
     gh=2*power-1
@@ -102,6 +102,9 @@ def solve(t,k,exps,plan=False,window=None,audit=False):
     triangles=[prod((e+1)*(e+2)//2 for e in exps[i:]) for i in range(len(exps)+1)]
     rank=len(exps)
     saturated=prod(e+2 for e in exps)%(2<<rank)!=0
+    # Optional stronger congruence from the exact exponent-order theorem,
+    # supplied by other callers only when proved for this complete profile.
+    odd_modulus,odd_remainder = odd_residue or ((4,1) if saturated else (1,0))
     g0=gcd(k+1,gh)
     Q=gh//g0
     H=k*Q+(k+1)//g0
@@ -174,7 +177,7 @@ def solve(t,k,exps,plan=False,window=None,audit=False):
             m,a,s=prefix; e=exps[i]
             T=(k+1)*power*m*(t//(e+1)); A=(1+2*k*power)*a; S=gh*s
             p=last_prime(e,T,A,S)
-            if p<=prev or (e%2 and saturated and p%4!=1): return
+            if p<=prev or (e%2 and p%odd_modulus!=odd_remainder): return
             if (A+S)%p: return
             c["divisible"]+=1
             z,w,h=local(p,e)
@@ -300,8 +303,10 @@ def solve(t,k,exps,plan=False,window=None,audit=False):
                     else:
                         intervals.append((low,high))
                 continue
-            for p in prime_interval(low,high):
-                if exps[i]%2 and saturated and p%4!=1: continue
+            candidates=(terminal_primes(prefix,exps[i:],low,high)
+                        if terminal_primes is not None and i==rank-2 else prime_interval(low,high))
+            for p in candidates:
+                if exps[i]%2 and p%odd_modulus!=odd_remainder: continue
                 descend(append(prefix,p,exps[i]),i+1,p,(*bases,p) if audit else ())
         if window is not None:
             for low,high in intervals:
@@ -319,10 +324,10 @@ def patterns(t):
 
 
 def run_job(job):
-    t,exps,lo,hi,plan,audit=job
+    t,exps,lo,hi,plan,audit,solver=job
     start=monotonic(); result=Counter()
     for k in range(lo,hi+1):
-        for key,value in solve(t,k,exps,plan,audit=audit).items():
+        for key,value in solver(t,k,exps,plan,audit=audit).items():
             if key.startswith("max_"): result[key]=max(result[key],value)
             else: result[key]+=value
     return t,exps,lo,hi,dict(result),round(monotonic()-start,3)
@@ -362,9 +367,9 @@ def self_test():
     print("self-test passed: segmented primes; 500 signed integer-root intervals; 72 planted surplus pairs")
 
 
-def main():
-    parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--t",type=int,default=36)
+def main(solver=solve,default_t=36,self_check=self_test,description=__doc__):
+    parser=argparse.ArgumentParser(description=description)
+    parser.add_argument("--t",type=int,default=default_t)
     parser.add_argument("--through",type=int,help="include every divisor count from --t to this value")
     parser.add_argument("--jobs",type=int,default=1,help="number of independent pattern workers (default: 1)")
     parser.add_argument("--self-test",action="store_true",help="run deterministic arithmetic regression tests and exit")
@@ -375,7 +380,7 @@ def main():
                         help="expand all divisors independently for each final divisibility survivor")
     args=parser.parse_args()
     if args.self_test:
-        self_test()
+        self_check()
         return
     if args.audit and args.plan: parser.error("--plan does not perform equality checks")
     if args.t<2: parser.error("the odd divisor count must be at least 2")
@@ -392,7 +397,7 @@ def main():
         if not 0<=lo<=hi<cap: parser.error(f"k must belong to [0,{cap-1}] at t={t}")
         for exps in patterns(t):
             if not args.exps or tuple(args.exps)==exps:
-                jobs.append((t,exps,lo,hi,args.plan,args.audit))
+                jobs.append((t,exps,lo,hi,args.plan,args.audit,solver))
     def report(rows):
         totals=Counter()
         for t,exps,lo,hi,counts,elapsed in rows:
