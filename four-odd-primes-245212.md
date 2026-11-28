@@ -17,6 +17,8 @@ The first replay builds 499 Lean modules and can take hours; subsequent runs reu
 
 **Five or six primes.** Any odd solution greater than one with at most six distinct prime factors must be divisible by three. Otherwise its Euler product is at most the product for 5, 7, 11, 13, 17, 19, which is $323323/165888<2$. With exactly five primes and just one factor of three, the only possible prime support is **3, 5, 7, 11, 13**. If the largest prime were at least 17, the four remaining Euler factors would have product at most $1309/768<12/7$; the interval bound below with $x(3,1)=7/6$ and $y(3,1)=2/3$ then gives a strict contradiction. These [additional Lean corollaries](OddSixWithoutThree245212.lean) import the standalone three-prime file. The unrestricted five- and six-prime cases remain open.
 
+On that last five-prime support, write $n=3\cdot 5^a7^b11^c13^d$. The [Lean theorem on exponents](FiveExponentBounds245212.lean) gives $a\ge18,\ b\ge12,\ c\ge7,\ d\ge6$. Consequently $n$ is divisible by $3\cdot5^{18}7^{12}11^7 13^6$, about $1.49\times10^{37}$. To see where the bounds come from, fix one of the four larger primes $p$, and write $C=\prod_{q\ne p,\,q>3} q/(q-1)$. The normalized sum is at most a weighted average of $(7/6)x(p,e)+(2/3)y(p,e)\le11/6$ and $(7/6)x(p,e)C$. The second endpoint therefore has to reach 2. Checking it at each indicated lower bound minus one, and using monotonicity in the exponent, excludes every smaller exponent. The Lean theorem takes the original OEIS equality as its hypothesis.
+
 ## Reduction to ten boxes
 
 For $p^e\parallel n$ write $T(p^e)=(e+1)p^e$, $x(p,e)=W(p^e)/T(p^e)$ and $y(p,e)=\sigma(p^e)/T(p^e)$. All three divisor functions are multiplicative, so at a solution $\prod x+\prod y=2$. We have
