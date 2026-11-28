@@ -32,11 +32,14 @@ def tables(path, bound):
             p = int(fields[0])
             if p > limit:
                 continue
-            if not sieve[p]:
-                raise ValueError(f"nonprime or duplicate prime in required data: {p}")
-            sieve[p] = 0
-            if len(fields) > 1:
-                irregular[p] = tuple(int(f.partition(b":")[0]) for f in fields[1:])
+            indices = tuple(int(f.partition(b":")[0]) for f in fields[1:])
+            if sieve[p] == 0:
+                raise ValueError(f"nonprime in required data: {p}")
+            if sieve[p] == 2 and indices != irregular.get(p, ()):
+                raise ValueError(f"duplicate prime with conflicting indices: {p}")
+            sieve[p] = 2
+            if indices:
+                irregular[p] = indices
     if checksum.hexdigest() != "a9b0eb7c97a5e9d2163936ea145d70a6":
         raise ValueError("the file does not match the published To163.gz uncompressed digest")
     missing = sieve.find(1)

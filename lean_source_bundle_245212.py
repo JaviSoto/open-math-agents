@@ -3,6 +3,7 @@
 Pack: python3 lean_source_bundle_245212.py --pack proof.tar.gz --root Module
       --theorem OMA.Namespace.theorem --sources WORKSPACE GENERATED
 Replay: extract the archive, then run lake env python3 /path/to/lean_source_bundle_245212.py --workers 4
+Or use --archive proof.tar.gz --scratch /path/to/task-cache to replay it directly.
 By default every module is built from source. For overlapping bundles, pass
 --cache /path/to/local-replay.sqlite to reuse kernel output for exactly the
 same source, imported modules, pinned checkout and Lean compiler. The final
@@ -93,7 +94,7 @@ def cache_object(path, key, data):
         db.commit()
 
 
-def replay(workers, source=HERE, cache=None):
+def replay(workers, source=HERE, cache=None, scratch=None):
     manifest = json.loads((source/MANIFEST).read_bytes())
     pin = subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
     if pin != PIN or pin != manifest['pin']:
@@ -105,7 +106,7 @@ def replay(workers, source=HERE, cache=None):
         environment = [pin, compiler, platform.system(), platform.machine(), flags,
                        digest(Path('lake-manifest.json').read_bytes()), os.environ['LEAN_PATH']]
     expected = f"'{manifest['theorem']}' depends on axioms: [propext, Classical.choice, Quot.sound]"
-    with TemporaryDirectory(prefix='a245212-lean-') as directory:
+    with TemporaryDirectory(prefix='a245212-lean-', dir=scratch) as directory:
         dest = Path(directory).resolve()
         env = dict(os.environ,LEAN_PATH=str(dest)+os.pathsep+os.environ['LEAN_PATH'])
         graph = {}
@@ -171,19 +172,33 @@ def replay(workers, source=HERE, cache=None):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--workers',type=int,choices=range(1,17),default=4)
-    parser.add_argument('--pack',type=Path)
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument('--pack',type=Path)
+    mode.add_argument('--archive',type=Path,help='packed source archive to extract and verify')
     parser.add_argument('--root')
     parser.add_argument('--theorem')
     parser.add_argument('--sources',type=Path,nargs='+')
     parser.add_argument('--cache',type=Path,help='optional trusted local SQLite cache; omit for a cold replay')
-    parser.add_argument('--from-dir',type=Path,default=HERE,help='extracted archive containing the proof manifest')
+    mode.add_argument('--from-dir',type=Path,help='extracted archive containing the proof manifest')
+    parser.add_argument('--scratch',type=Path,help='existing task-owned directory for temporary sources and objects')
     args = parser.parse_args()
     if args.pack:
         if not args.root or not args.theorem or not args.sources:
             parser.error('--pack needs --root, --theorem and --sources')
         pack(args.pack,args.root,args.theorem,args.sources)
+    elif args.archive:
+        with TemporaryDirectory(prefix='lean-archive-',dir=args.scratch) as tmp:
+            with tarfile.open(args.archive) as archive:
+                for entry in archive.getmembers():
+                    if not entry.isfile() or not re.fullmatch(r'[A-Za-z][A-Za-z0-9_]*/[A-Za-z][A-Za-z0-9_.-]*',entry.name):
+                        raise ValueError(f'unexpected archive entry: {entry.name}')
+                archive.extractall(tmp,filter='data')
+            manifests = list(Path(tmp).glob('*/'+MANIFEST))
+            if len(manifests) != 1:
+                raise ValueError('expected exactly one proof manifest')
+            replay(args.workers,manifests[0].parent,args.cache,args.scratch)
     else:
-        replay(args.workers,args.from_dir,args.cache)
+        replay(args.workers,args.from_dir or HERE,args.cache,args.scratch)
 
 
 if __name__=='__main__':
