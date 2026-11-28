@@ -1,0 +1,31 @@
+{
+  "inputs": {
+    "witness_sha256": "2e6837e168ba78f6ca8b46865d674c90bb91326338810acc54392f7b638d181e",
+    "base_sha256": null,
+    "data_sha256": "22af730229bc7fb97dd41c3000ad59170935ebec620a46843e4d35816332c133",
+    "theorem_sha256": "3e21cb30b0d1e147785b9cabe3af493ca0a92831fcaf6070ee640fd085007a8f",
+    "generic_sha256": "daed3b1f233281e2fde5cc4f8605896723ab1e4f3e265f4e3defabe258155241",
+    "guard_sha256": "1dc90ce46bf65274f8c2cab7dabaec950190fe86824274c505ae751fd9066979",
+    "guard_bridge_sha256": "22387c94478c1b01249eea76d09535a266a68904aa173368728ad5862ebae4e0",
+    "fact_hashes": {
+      "CheckSize": "ad35a0f6014c072a0c3a7f6a3e37bec4edabceca694a43968d7980f7db7517b6",
+      "CheckHeights": "ad86a2a9f6a854e36e07e528e942a585860b7bf62d20b4009d454f86a39782a6",
+      "CheckSum": "e326c17b5eaa467340b7bf47e5e2aaca7eac0e378b2f9d6ae53020eef00271ab",
+      "CheckSquare": "1ae458ef232606ab3aa8bdf0c7718a8f5d90835acac72a3a90e13a1ad6f4514f",
+      "CheckGuard": "1aea15ae993daecaa4544ac663a4730fc53b91839d689df5fc58a20ce002e725"
+    },
+    "N": 1048576,
+    "sum": "104857600000000023599",
+    "max_conv": "7878290248332938517001891602383889",
+    "numerator": "16521972150871918676807550977722577584128",
+    "denominator": "10995116277760004949069004800000556912801"
+  },
+  "status": "verified",
+  "axioms": {
+    "C1aUpper.c1a_upper_verified": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ]
+  }
+}

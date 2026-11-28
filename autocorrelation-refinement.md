@@ -21,6 +21,15 @@ C_{1a}\le \frac{4678612345292384059042788404573769151294017457980713245108123297
 \]
 The exact improvement over Nilsson's million-bin example is about \(7.17\times10^{-14}\). Download his pinned [witness.json](https://raw.githubusercontent.com/WillyNilsson/open-math-agents/7e53f325b7dbdc455c6a7f33ce033a6538e2f091/witness.json) and run [nilsson_refinement.py](nilsson_refinement.py) on it, once normally and once with `--ntt` (NumPy). Both methods check its digest, generate the tilted heights, and agree on the exact fraction and the maximizing lag 1,732,057. The two checks are exact integer computations, separate from the general Lean theorem.
 
+**A direct Lean bound.** Fitting the two affine-tilt coefficients to the exact peak gaps and rounding the heights to a smaller integer grid gives
+\[
+C_{1a}\le\frac{16521972150871918676807550977722577584128}{10995116277760004949069004800000556912801}
+=1.50266461340578746239922913094819\ldots .
+\]
+The full theorem was checked against `Constant1a.C1a` on the formal-conjectures pin `9097e2f90e66`, with only `propext`, `Classical.choice` and `Quot.sound`. Both integer checkers separately found maximizing lag 728,984. Run `python3 c1a_lean_witness.py witness.json fine.json peak.json` using [this generator](c1a_lean_witness.py) and Nilsson's original input linked above. In his [pinned certificate checkout](https://github.com/WillyNilsson/open-math-agents/tree/7e53f325b7dbdc455c6a7f33ce033a6538e2f091), run `python3 lean/verify.py /path/to/fine.json --exact-receipt /path/to/peak.json --fc /path/to/formal-conjectures --bin /path/to/lean-4.33.1/bin`. The supplied peak is a proposal that the kernel checks. The [receipt](autocorrelation-million-lean-receipt.json) includes the hashes, exact fraction and axiom report. The continuous analytic bridge and packed-integer verification are due to Kirschenman and Nilsson; the change here is the choice of fine heights.
+
+A [local perturbation argument](autocorrelation-finite-peaks.md) also excludes every single polynomial or finite trigonometric-polynomial density, and piecewise-polynomial densities whose autoconvolution has finitely many maximizers. This part is an analytic proof.
+
 ## The construction
 
 Write \(a_i\ge0\) for the heights, \(0\le i<n\), \(S=\sum_i a_i>0\), \(C_k=\sum_{i+j=k}a_i a_j\), and \(M=\max_k C_k\), taking missing coefficients as zero. The objective is \(2nM/S^2\): the convolution of two equal-width interval indicators is a tent, and the sum of those tents is linear between grid knots. This is the polynomial formulation in [Matolcsi and Vinuesa, §4](https://arxiv.org/abs/0907.1379).
