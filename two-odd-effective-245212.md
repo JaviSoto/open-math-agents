@@ -5,7 +5,7 @@ In any A245212 counterexample with exactly two odd primes, **the smaller odd-pri
  \min(B,C)\le32,\quad K\le512\cdot32^4=536870912,\quad
  \max(B,C)\le32768\cdot32^6=35184372088832.
 \]
-The last two bounds are deliberately coarse: they are immediate from the [complementary-exponent estimates](complementary-exponent-245212.md). After choosing the smaller prime \(p\le6K\) and all exponents, the bigger prime is the unique possible [last digit](odd-divisor-count-245212.md). The full finite search at these sizes has not been performed.
+The [standalone Lean proof](TwoOddEffectiveResearch245212.lean) derives \(\min(B,C)\le32\) from the original equation for both prime orderings and every \(k\). The last two bounds follow from the [complementary-exponent estimates](complementary-exponent-245212.md) after the previously excluded exponent-one case. After choosing \(p\le6K\) and the exponents, the bigger prime is the unique possible [last digit](odd-divisor-count-245212.md).
 
 Use the notation of the [global finiteness paper](two-odd-global-245212.md): \(p<q,\ u=p-1,\ v=q-1,\ P=p^{B-1},\ Q=q^{C-1},\ z=2^K,\ G=z-1,\ \delta=K/G\). Set \(m=\min(B,C)\), \(M=\max(B,C)\). Suppose \(m\ge33\); we derive a contradiction. We have \(p\le5K\). The [reciprocal bound](two-odd-finiteness-245212.md) gives \(p> (K-1)(m-1)/m\), in particular \(p\ge K/3\) for \(K\ge3\). The cases \(K=1,2\) have previously been excluded ([odd case](four-odd-primes-245212.md), [\(k=1\)](two-odd-finiteness-245212.md)).
 
@@ -60,10 +60,12 @@ Run the [exact integer replay](two_odd_effective_245212.py):
 
     python3 two_odd_effective_245212.py
 
-Every one of the \(253\cdot86=21758\) boxes passes at least one test. There is no remaining case with \(m\ge33\). This finite scalar computation and the preceding bounds are separate from the [Lean proof of the two simultaneous separations](TwoOddGlobalGap245212.lean).
+Every one of the \(253\cdot86=21758\) boxes passes at least one test. There is no remaining case with \(m\ge33\). The standalone proof combines the table with the [simultaneous separations](TwoOddGlobalGap245212.lean); its theorem \(\texttt{OMA.TwoOddEffectiveAll245212.smaller_exponent}\) depends only on \(\texttt{propext}\), \(\texttt{Classical.choice}\), and \(\texttt{Quot.sound}\).
 
 The same [finite scalar tests are also checked in Lean](TwoOddEffectiveTable245212.lean);
 the theorem `OMA.TwoOddEffectiveTable245212.ranges` covers every displayed
 index and depends only on `propext` and `Quot.sound`. An independent rational
 interval calculation gave the same exclusion in every cell, allowing the
 three error terms to share their remaining margin.
+
+The Lean proof uses integer comparisons throughout. For instance, for \(n\ge256\), \(2^{65}n^{21}\le2^n\): it holds at 256, and \((257/256)^{21}<2\) propagates it by induction. Likewise \(K^{20}\le2^K\) and \(m^{16}\le2^m\) above 256. Squaring (1) and using \(p^2\ge8\) gives \(3(m-1)\le74+7K+m\), enough for \(m\le5K\). Also \(K\le3p\) implies \(K^4\le p^5\) for \(K\ge256\); thus \(p^{m-1}\ge K^{24}p^2\) when \(m\ge33\). These inequalities replace square roots and real logarithms in the large-\(K\) comparison. They lead to the same threshold.
