@@ -1,0 +1,25 @@
+# A \(29/24\) lower bound for the cyclic minimum modulus
+
+Suppose \(A\subseteq\mathbb Z/N\mathbb Z\) has cardinality \(n\ge3\), and that taking every element of \(A\) once gives the only length-\(n\) multiset on \(A\) with its sum. Then
+\[
+                             24N\ \ge\ 29\cdot 2^{n-1}.
+\]
+This is a partial result on [Fonollosa’s conjecture](https://arxiv.org/abs/2607.08366) that the minimum is \(2^n-2^{\lfloor\log_2 n\rfloor}\). It improves the [\(7/6\) bound](cyclic-surplus-seven.md) by refining the count of gaps of length two and three.
+
+Translate a pivot to zero. For \(n\ge4\) choose one of the other labels \(g=g_i\) with \(4g\ne0\). Such a label exists: the \(2^{n-1}\) distinct subset sums cannot all lie in the at-most-four-element subgroup killed by four. The subset-sum injectivity follows directly from the multiset hypothesis: if a squarefree mask \(T\) has the same sum as a multiset \(Y\) of nonpivot labels with \(|Y|\le |T|+1\), replace \(T\) by \(Y\) and adjust the number of zeros, forcing \(Y=T\).
+
+If some label distinct from \(g\) equals \(3g\), let \(Q\) be the subset sums omitting those two nonpivot labels. The four translates \(Q,Q+g,Q+3g,Q+4g\) are disjoint by injectivity. Their offsets realize every difference \(g,2g,3g,4g\). Thus the translates \(Q+kg,\ 0\le k\le4\), are all disjoint and \(N\ge5|Q|=(5/4)2^{n-1}\). Assume from now on that no other label is \(3g\).
+
+Write \(S\) for the \(n-2\) nonpivot indices other than \(i\), and \(s=2^{n-2}\). For any mask \(T\), let \(\sigma(T)\) be its subset sum. We first show that at most \(3s/8\) targets \(T\subseteq S\) admit
+\[
+                   \sigma(T)=2g+\sigma(A'),\qquad |T|=|A'|,
+\]
+where \(A'\) may contain \(i\). Cancel common coordinates to form \(U=T\setminus A'\), \(V=A'\setminus T\). The reduced pair forces a face: the bits in \(U\) are present and the bits in \(W=V\cap S\) are absent. Two distinct pairs satisfy \(U\cap W'\ne\varnothing\) and \(U'\cap W\ne\varnothing\). Indeed, \(\sigma(U)+\sigma(V')=\sigma(U')+\sigma(V)\) has equal lengths, so a squarefree side would imply equality as multisets, hence equality of the reduced pairs. Since \(U,U'\subseteq S\), the intersection survives projection. Both \(U\) and \(W\) are nonempty: \(U=\varnothing\) would force \(2g=0\), and \(W=\varnothing\) would force \(V=\{i\}\), \(U=\{a\}\), \(g_a=3g\).
+
+For a family of such pairs, [Bollobás’s set-pairs inequality](https://web.vu.lt/mif/s.jukna/EC_Book_2nd/Bollobas.pdf) gives \(\sum \binom{|U|+|W|}{|U|}^{-1}\le1\). In a random order of \(S\), the event that every element of \(U\) precedes every element of \(W\) has this probability, and the two cross-intersections make the events disjoint. If every support has size \(k=|U|+|W|\ge3\), each face density is \(2^{-k}\le(3/8)/\binom{k}{|U|}\): the largest entry in the third normalized Pascal row is \(3/8\), and averaging adjacent entries cannot increase the maximum. Summing gives the claimed density.
+
+It remains to consider a face \(U=\{a\},W=\{b\}\) of density \(1/4\). Its unprojected negative part is also \(V=\{b\}\) because \(|V|=|U|=1\). Every other face has the two bits reversed. Inside that opposite quadrant, each remaining face is proper: an exact reverse pair would give both \(g_a-g_b=2g\) and \(g_b-g_a=2g\), contradicting \(4g\ne0\). Distinct remaining faces still have both cross-intersections after these two fixed bits are removed, since all of them prescribe the same values for both bits. The half-cube lemma from the [\(9/8\) note](cyclic-surplus.md) bounds their total density inside the quadrant by \(1/2\), giving at most \(1/4+(1/4)(1/2)=3/8\) overall.
+
+For completeness, walk by \(+g\) between consecutive points of \(C=\{\sigma(T):T\subseteq S\}\) in every coset that meets \(C\). All \(s\) gaps have length \(\ell\ge2\), and their lengths sum to at most \(N\). A gap from \(\sigma(B)\) to \(\sigma(T)\) has integer slack \(e=\ell-2+|B|-|T|\ge0\) by the squarefree replacement rule; indeed \(B\) with \(\ell\) copies of \(i\) is a different multiset of sum \(\sigma(T)\). Sources and targets permute \(C\), so \(\sum e=\sum(\ell-2)\le L=N-2s\). At most \(L\) gaps have positive slack and at most \(L/2\) have length at least four. For all others, take \(A'=B\) if \(\ell=2\), or \(A'=B\cup\{i\}\) if \(\ell=3\). These are exactly the joint ties counted above. Thus \(s\le 3s/8+3L/2\), whence \(12N\ge29s\). When \(n=3\), the [\(7/6\) estimate](cyclic-surplus-seven.md) and integrality give \(N\ge5\), which suffices.
+
+**Formal verification.** [CyclicPairs.lean](CyclicPairs.lean) proves the set-pairs and \(3/8\) density bounds. [CyclicSurplusTwentyNine.lean](CyclicSurplusTwentyNine.lean) proves `OMA.CyclicSurplus.modulus_twenty_nine_lower` directly for the upstream `IsValidMod` predicate using the preceding [two-step accounting](CyclicSurplusSeven.lean). The [first note](cyclic-surplus.md) gives the prior results of [Inal](https://doi.org/10.17605/OSF.IO/C58Q9) on abelian groups and [Sitjar](https://doi.org/10.5281/zenodo.24228247) on doubled-label escapes and finite cyclic cases.
