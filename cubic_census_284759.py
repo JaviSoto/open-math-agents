@@ -32,35 +32,58 @@ def even_bernoulli(max_index):
     return values
 
 
-def smooth_factors(primes, limit, end):
-    """Unique nonincreasing factor lists for all nontrivial smooth integers."""
-    def visit(prefix, factors, end):
-        for index in range(end):
-            p = primes[index]
-            product = prefix * p
-            if product > limit:
+def cofactor_class(p, k, case):
+    if case==12:
+        return p-1, k+3
+    return 2*(p-1), 2*k+(4 if case==15 else 2)-p
+
+
+def reduced_exponent(n,case):
+    return n-3 if case==12 else (n-(3 if case==15 else 1))//2
+
+
+def smooth_hits(p, primes, limit, indices, case):
+    """Generate the smaller factors in order; solve for the last one modulo p−1."""
+    def visit(prefix, factors, start):
+        low = primes[start]
+        top = min(p, limit//prefix)
+        modulus = (p-1)*(1 if case==12 else 2)
+        d = gcd(prefix,modulus)
+        step = modulus//d
+        inverse = pow(prefix//d, -1, step)
+        for k in indices[p]:
+            _,target=cofactor_class(p,k,case)
+            if target%d:
+                continue
+            residue = target//d*inverse % step
+            for q in range(low+(residue-low)%step, top+1, step):
+                if q not in indices:
+                    continue
+                n = p*prefix*q
+                e=reduced_exponent(n,case)
+                if e%(q-1) in indices[q] and all(e%(r-1) in indices[r] for r in factors):
+                    yield n
+        for index in range(start,len(primes)):
+            r = primes[index]
+            if r>p or prefix*r*r>limit:
                 break
-            new = factors + (p,)
-            yield product, new
-            yield from visit(product, new, index+1)
-    yield from visit(1, (), end)
+            yield from visit(prefix*r, factors+(r,), index)
+    yield from visit(1, (), 0)
 
 
-def lower_range(bound, cap, indices, divisors):
+def lower_range(bound, cap, indices, divisors, case=12):
     small = max(37, (bound+cap-1)//cap)
     primes = sorted(p for p in indices if p <= small)
-    for idx, p in enumerate(primes):
-        for m, factors in smooth_factors(primes, bound//p, idx+1):
-            e = p*m-3
-            if e % (p-1) in indices[p] and all(e % (q-1) in indices[q] for q in factors):
-                yield p*m
+    for p in primes:
+        yield from smooth_hits(p, primes, bound//p, indices, case)
     for p, rows in indices.items():
         if p <= small:
             continue
         for k in rows:
-            first = 37 + (k+3-37) % (p-1)
-            for m in range(first, bound//p+1, p-1):
-                if admissible(m, p, p*m-3, indices, divisors):
+            step, residue = cofactor_class(p,k,case)
+            first = 37 + (residue-37)%step
+            for m in range(first, bound//p+1, step):
+                if admissible(m,p,reduced_exponent(p*m,case),indices,divisors):
                     yield p*m
 
 
@@ -116,13 +139,22 @@ if __name__ == "__main__":
     parser.add_argument("--bound", type=int, required=True)
     parser.add_argument("--workers", type=int, default=4)
     parser.add_argument("--cap", type=int, default=63917460)
+    parser.add_argument("--prefix-case",type=int,choices=[12,15,16],
+                        help="only test products with largest prime in the audited prefix, for the selected test")
     args = parser.parse_args()
     cap = min(args.cap, max(37, args.bound//37))
     indices, divisors = tables(args.table, cap*37)
     control = min(50000, args.bound)
-    assert set(lower_range(control,cap,indices,divisors)) == {
-        n for c,n in direct_index_control(control,indices) if c==12}
+    case=args.prefix_case or 12
+    assert set(lower_range(control,cap,indices,divisors,case)) == {
+        n for c,n in direct_index_control(control,indices) if c==case}
     print(f"Complete prime prefix: {cap:,}; upper n: {args.bound:,}", flush=True)
-    for n in sorted(census(args.bound,cap,indices,divisors,args.workers)):
-        result = cubic_test(n, False)
+    if args.prefix_case:
+        print(f"Conjecture {case}: largest prime factor at most {cap:,}",flush=True)
+        hits=set(lower_range(args.bound,cap,indices,divisors,case))
+    else:
+        hits=census(args.bound,cap,indices,divisors,args.workers)
+    for n in sorted(hits):
+        result = cubic_test(n, case!=12)
         print(n, "passes" if all(r==0 for _,_,r in result) else "fails", result, flush=True)
+    print(f"{len(hits)} index candidates",flush=True)

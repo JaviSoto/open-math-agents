@@ -1,0 +1,24 @@
+# A cubic counterexample divisible by 37, and the half-exponent search
+
+**$77{,}106{,}998{,}694{,}419=37\cdot65{,}579\cdot31{,}778{,}053$** satisfies $n^3\mid\sum_{i=1}^{n-1}i^{n-2}$. In particular, the *smallest irregular prime*, 37, really can occur in a cubic counterexample. It cannot occur in any [quartic counterexample](quartic-bernoulli-284760.md). We evaluated the original sum independently at each of the three prime cubes: the remainders were **0, 0, 0**.
+
+There are exactly **four composite successes through one trillion**: 246,407,261; 409,407,431; 564,458,189; and 7,708,886,483. The [earlier census](cubic-tests-284759.md) explains the complete largest-prime split; the extended run used the same exact Bernoulli criterion above the last consecutive table row, generating smaller smooth factors in order and solving for the final factor by a linear congruence. The 77-trillion example came from the independent product search, not that bounded census.
+
+**Unbounded semiprime theorem.** If $p\le q$ are primes and $p<101$, then $pq$ fails the original cubic test, however large $q$ is. [Lean source archive](cubic-small-semiprimes-284759.tar.gz). In fact, every prime factor below 101 of a cubic hit must be 37, 59, or 67. The full proof checks every relevant small power row, computes $B_{34},B_{56},B_{64}$ by their exact rational recurrence, and verifies complete factorizations of their numerators with recursive Lucas primality certificates. For each candidate large prime divisor, its residue at the small prime excludes it. Repeated factors are covered. The generator's factorization software is not trusted by the proof.
+
+## Meštrović's Conjecture 15
+
+Here $n\equiv3\pmod4$ and the test is $n^3\mid\sum_{i=1}^{n-1}i^{(n-1)/2}$. We find **no composite success through 79,456,894,939**, and no semiprime success with *both* factors at most $2^{31}-1$, without a separate bound on their product. We also find no success on triples $pqr$ with $p\le257$ and $p\le q\le r\le2^{31}-1$. These are computational exclusions; the full conjecture remains open.
+
+The [Hart–Harvey–Ong table](https://arxiv.org/abs/1605.02398) stores every irregular index $k$ at each prime $r<2^{31}$. For the ordinary cubic test, the remaining cofactor must equal $k+3\pmod{r-1}$; for Conjecture 15 it must equal $2k+4-r\pmod{2(r-1)}$. For each allowed least factor we solve this linear congruence for the middle prime and test the other factors' own indices. For semiprimes the cofactor is itself the other prime. The program checks the authors' uncompressed MD5, and the compiled join matched a separate Python implementation on all three tests through largest prime 1.7 million.
+
+To obtain the absolute half-exponent bound, a second enumeration allows **any number of factors** with largest prime at most 63,917,460. There are zero index candidates through $37(2^{31}-1)$. Above that prime cutoff and below this bound, the complementary factor is less than $37^2$ and therefore is a single prime if admissible. The largest prime is at most $2^{31}-1$ because the other prime is at least 37. These are exactly the semiprimes covered by the full table search.
+
+For Conjecture 12 this product join also found the false positives $16{,}843^2$ and $2{,}124{,}679^2$. The second fails the defining test modulo $2{,}124{,}679^6$, with nonzero remainder $31{,}791{,}727{,}784{,}359{,}346{,}230{,}918{,}720{,}573{,}778{,}232{,}144$. Removing repeated-prime inputs from the search would miss both controls.
+
+## Reproduce
+
+* [Census](cubic_census_284759.py): `python3 cubic_census_284759.py To163.gz --bound 1000000000000 --workers 5`; then `--bound 79456894939 --prefix-case 15` for the half-exponent prefix. The earlier [table and coverage description](cubic-tests-284759.md) links the data.
+* [Product join](hho_product_join.py): compile [irregular_product_join.cpp](irregular_product_join.cpp) with C++17 and `-O3`, then run `python3 hho_product_join.py BINARY --archive twobillion.tar.bz2 --smallest 257 --cases 12 15 16`. [Authors' archive](https://web.maths.unsw.edu.au/~davidharvey/research/twobillion.tar.bz2). Use `--control To163.gz` instead of `--archive` for the small comparison.
+* [Independent direct check](fast_cubic_test.py): compile [power_sum_rows.cpp](power_sum_rows.cpp) with C++17, GMP and GMPXX. Run `python3 fast_cubic_test.py BINARY 4514260853041 77106998694419 --workers 6`. The finite binomial expansion is evaluated at the original exponent, with one shared modular power per residue. Small direct sums including repeated primes run first.
+* [Semiprime proof](cubic-small-semiprimes-284759.tar.gz): in Formal Conjectures at `9097e2f90e66d2f6244209cb1c07f7120d17ec53`, run `lake env python3 /path/to/lean_source_bundle_245212.py --archive /path/to/cubic-small-semiprimes-284759.tar.gz`. The final theorem is `OMA.CubicSmallSemiprimes284759.excluded`.
