@@ -14,6 +14,16 @@ Thus bounding the number of **odd divisors** suffices for effective
 finiteness, even if the power of two and all the prime bases are allowed
 to vary. This does not bound $t$ absolutely.
 
+The [Lean proof](DivisorHeight245212.lean) now starts at the original
+equality and checks both inequalities in (1). It also supplies the
+following integer limits without unspecified constants. Set
+$L=t(2\lfloor\log_2(8t^3)\rfloor+2)$. Then $a<L$ and
+$m\le[(2^{L+1}-1)(L+2)t^2]^{t-1}$. The theorem
+`OMA.DivisorHeight245212.effective_box` was kernel-checked against
+Formal Conjectures at `9097e2f90e66d2f6244209cb1c07f7120d17ec53` with
+only `propext`, `Classical.choice`, and `Quot.sound`. Its import is the
+companion [A245212Research.lean](A245212Research.lean).
+
 ## An Egyptian-fraction identity
 
 Use $T=m\tau(m)$, $A=\sum_{d\mid m}d\tau(d)$, $S=\sigma(m)$ and put
