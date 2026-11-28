@@ -1,0 +1,123 @@
+archive=b4d782d5f6e3e063e204ee1a75730c581db7adb2e0727e098459ed9e6de1c6c3; formal-conjectures=9097e2f90e66d2f6244209cb1c07f7120d17ec53; fresh-kernel-build; workers=8
+Checked OddBoxLogs245212.
+Checked OddBoxLogRules245212.
+Checked Smooth245212.
+Checked SmoothValue245212.
+Checked Abundance245212.
+Checked PrimePowerDiv245212.
+Checked TwoOddGlobalGap245212.
+Checked ComplementaryLocal245212.
+Checked ComplementaryPole245212.
+Checked ComplementaryDyad245212.
+Checked QuadraticPowerGap245212.
+Checked ComplementaryNonres245212.
+Checked ComplementaryHeight245212.
+Checked OddBoxComplement245212.
+Checked OddBoxSeparation245212.
+Checked ComplementaryBase245212.
+Checked TwoOddEffectiveTable245212.
+Checked TwoOddParameters245212.
+Checked OddBoxCheck245212.
+Checked OddBoxPrime245212.
+Checked SimultaneousBound245212.
+Checked ComplementaryFar245212.
+Checked OddBoxModel245212.
+Checked OddBoxCaps245212.
+Checked OddBoxSound245212.
+Checked OddBoxExterior245212.
+Checked ComplementarySize245212.
+Checked ComplementaryExp245212.
+Checked ComplementaryBox245212.
+Checked ComplementaryCut245212.
+Checked DivisorEnvelope245212.
+Checked OddBoxFixed245212.
+Checked TwoOddJoint245212.
+Checked TwoOddErrorCells245212.
+Checked TwoOddCoarse245212.
+Checked TwoOddGrowth245212.
+Checked TwoOddLargeScale245212.
+Checked TwoOddEffectiveOriginal245212.
+Checked OddBoxOriginal245212.
+Checked RankTwoPoleInterior245212.
+Checked RankTwoInteriorBox245212.
+Checked LastDigit245212.
+Checked OddCofactor245212.
+Checked Moving245212.
+Checked LargeWindow245212.
+Checked LargeExact245212.
+Checked HeightLocal245212.
+Checked ReverseDigit245212.
+Checked PairExtension245212.
+Checked MovingTree245212.
+Checked OddFaces245212.
+Checked OddAbundancy245212.
+Checked MovingData245212.
+Checked MovingMain245212.
+Checked SmoothData245212.
+Checked SmoothMixed245212.
+Checked DyadicEuler245212.
+Checked DyadicBlocks245212.
+Checked CapOrder245212.
+Checked SquareCompact245212.
+Checked DyadicPower245212.
+Checked FixedExponents245212.
+Checked SquareFinite245212.
+Checked WeightVal245212.
+Checked ExponentParity245212.
+Checked BoundedAtom245212.
+Checked TwoOddFinite245212.
+Checked DyadicLeast245212.
+Checked PairSweep245212.
+Checked RankTwoReplay245212.
+Checked RankTwoInteriorWalk245212.
+Checked RankTwoInteriorCover245212.
+Checked RankTwoOriginalCover245212.
+Checked LinearPowerGap245212.
+Checked SmallLength245212.
+Checked SmallLinear245212.
+Checked SmallLinearReplay245212.
+Checked SmallLinearClosed245212.
+Checked SmallCaps245212.
+Checked SmallFacts245212.
+Checked SmallExponent245212.
+Checked SmallReplay245212.
+Checked SmallLeast245212.
+Checked SmallFastReplay245212.
+Checked SmallFastDegree245212.
+Checked SmallSecondBlocks245212.
+Checked SmallThirdBlocks245212.
+Checked SmallFourthBlocks245212.
+Checked SmallOriginal245212.
+Checked Least7Pair245212.
+Checked Least11Pair245212.
+Checked FiveMovingPair245212.
+{"length": 13, "source": "RankTwoCell13.lean", "sha256": "803bc1420cc87d35977c307d6c67b2a64cd79bf0d5ad3b9a570d8490f8285ed4", "bytes": 108914, "elapsed": 76.58, "costs": "RankTwoCell13: 1026 declarations; nodes=3238, integer positions=74628", "kernel": "'OMA.RankTwoCell13.reverse' depends on axioms: [propext, Classical.choice, Quot.sound]"}
+{"length": 12, "source": "RankTwoCell12.lean", "sha256": "e09656f2ca9870712fded4576fda025409d283c1d4e4a66504114a21067f4b94", "bytes": 131238, "elapsed": 102.32, "costs": "RankTwoCell12: 1232 declarations; nodes=3940, integer positions=103719", "kernel": "'OMA.RankTwoCell12.reverse' depends on axioms: [propext, Classical.choice, Quot.sound]"}
+{"length": 14, "source": "RankTwoCell14.lean", "sha256": "fccfbe11b5f03af40cd9f85d1b00da0b8b90c57bfb9151d92d5f2eed8c9f6fd8", "bytes": 91592, "elapsed": 75.7, "costs": "RankTwoCell14: 866 declarations; nodes=2572, integer positions=63416", "kernel": "'OMA.RankTwoCell14.reverse' depends on axioms: [propext, Classical.choice, Quot.sound]"}
+{"length": 15, "source": "RankTwoCell15.lean", "sha256": "f2a4b4db5ef3fd89985dd07c5f4f2d1029ef4bf9f4c0f3ed4005f67e3621e3ca", "bytes": 77136, "elapsed": 63.72, "costs": "RankTwoCell15: 728 declarations; nodes=2148, integer positions=52391", "kernel": "'OMA.RankTwoCell15.reverse' depends on axioms: [propext, Classical.choice, Quot.sound]"}
+{"length": 16, "source": "RankTwoCell16.lean", "sha256": "3d95623588d2515372542567183390406bffd293988b504f635b7a84e69173c3", "bytes": 73862, "elapsed": 58.92, "costs": "RankTwoCell16: 702 declarations; nodes=1880, integer positions=46699", "kernel": "'OMA.RankTwoCell16.reverse' depends on axioms: [propext, Classical.choice, Quot.sound]"}
+{"length": 17, "source": "RankTwoCell17.lean", "sha256": "28d2096c1d3d696afbfb0d7e48c84b07eefc2db213189196f42a4b72b000a697", "bytes": 55439, "elapsed": 49.1, "costs": "RankTwoCell17: 520 declarations; nodes=1564, integer positions=35869", "kernel": "'OMA.RankTwoCell17.reverse' depends on axioms: [propext, Classical.choice, Quot.sound]"}
+{"length": 19, "source": "RankTwoCell19.lean", "sha256": "fcab0d3cfaf9c4dc8f152bbc411e1628aff31aec6ed12a7f8eff20f838ec5dc4", "bytes": 28349, "elapsed": 30.9, "costs": "RankTwoCell19: 256 declarations; nodes=982, integer positions=16131", "kernel": "'OMA.RankTwoCell19.reverse' depends on axioms: [propext, Classical.choice, Quot.sound]"}
+{"length": 18, "source": "RankTwoCell18.lean", "sha256": "7b7f54ac4e2be463ce975cc744219b03db04aab9e5b003d1ad671f000255d7b9", "bytes": 40183, "elapsed": 37.45, "costs": "RankTwoCell18: 370 declarations; nodes=1270, integer positions=25852", "kernel": "'OMA.RankTwoCell18.reverse' depends on axioms: [propext, Classical.choice, Quot.sound]"}
+{"length": 21, "source": "RankTwoCell21.lean", "sha256": "9555577d08523d156df273e9c49035ecfd80aefbbbfb767cdf0a556edcf0a8ee", "bytes": 9716, "elapsed": 15.27, "costs": "RankTwoCell21: 84 declarations; nodes=338, integer positions=2421", "kernel": "'OMA.RankTwoCell21.reverse' depends on axioms: [propext, Classical.choice, Quot.sound]"}
+{"length": 20, "source": "RankTwoCell20.lean", "sha256": "0967780c1bfaeb84289c38cecd37d77bee0ab707b8e5a263d4939cab765cc7ba", "bytes": 15677, "elapsed": 21.09, "costs": "RankTwoCell20: 136 declarations; nodes=642, integer positions=7780", "kernel": "'OMA.RankTwoCell20.reverse' depends on axioms: [propext, Classical.choice, Quot.sound]"}
+{"length": 22, "source": "RankTwoCell22.lean", "sha256": "714b1b5881d58f548b8490a53c525ed7f8de7ae36afe1ad2791ecb6716c88c03", "bytes": 5197, "elapsed": 11.87, "costs": "RankTwoCell22: 42 declarations; nodes=184, integer positions=0", "kernel": "'OMA.RankTwoCell22.reverse' depends on axioms: [propext, Classical.choice, Quot.sound]"}
+{"length": 23, "source": "RankTwoCell23.lean", "sha256": "7b7bc7597a1692d61ae0f41d4fd1e243533891cfe6d6ae9bc0bf88187d61affd", "bytes": 3227, "elapsed": 12.21, "costs": "RankTwoCell23: 24 declarations; nodes=106, integer positions=0", "kernel": "'OMA.RankTwoCell23.reverse' depends on axioms: [propext, Classical.choice, Quot.sound]"}
+{"length": 24, "source": "RankTwoCell24.lean", "sha256": "8f736b67258d5f1858a6648c06d88fe527a305c5bc41b206f567dba567552902", "bytes": 2557, "elapsed": 12.43, "costs": "RankTwoCell24: 18 declarations; nodes=78, integer positions=0", "kernel": "'OMA.RankTwoCell24.reverse' depends on axioms: [propext, Classical.choice, Quot.sound]"}
+{"length": 25, "source": "RankTwoCell25.lean", "sha256": "4122be3d9289f1cd579b5453cd68bef4d178f86d5060fb4020ab9c69bf0ef298", "bytes": 1920, "elapsed": 11.63, "costs": "RankTwoCell25: 12 declarations; nodes=60, integer positions=0", "kernel": "'OMA.RankTwoCell25.reverse' depends on axioms: [propext, Classical.choice, Quot.sound]"}
+{"length": 26, "source": "RankTwoCell26.lean", "sha256": "4b2ea10d41f72e70f3bd82472a6fb414c6911929f74dba16619cec59587818cb", "bytes": 1282, "elapsed": 8.76, "costs": "RankTwoCell26: 6 declarations; nodes=38, integer positions=0", "kernel": "'OMA.RankTwoCell26.reverse' depends on axioms: [propext, Classical.choice, Quot.sound]"}
+{"length": 27, "source": "RankTwoCell27.lean", "sha256": "75d9e54f6f6a5dd7184710ba561b2d85362a4f083d3a589302ca9ffe8f621610", "bytes": 1276, "elapsed": 9.0, "costs": "RankTwoCell27: 6 declarations; nodes=36, integer positions=0", "kernel": "'OMA.RankTwoCell27.reverse' depends on axioms: [propext, Classical.choice, Quot.sound]"}
+{"length": 28, "source": "RankTwoCell28.lean", "sha256": "572e8091bad98fc182b88dca4bc17a4c8ebe8894441cd67e503953d0839a136e", "bytes": 1071, "elapsed": 10.89, "costs": "RankTwoCell28: 4 declarations; nodes=32, integer positions=0", "kernel": "'OMA.RankTwoCell28.reverse' depends on axioms: [propext, Classical.choice, Quot.sound]"}
+{"length": 29, "source": "RankTwoCell29.lean", "sha256": "3360c4097af06883877fe3b019ba9bcf0ecb3fc350df1d10f1ae378506ad2fb3", "bytes": 1071, "elapsed": 13.32, "costs": "RankTwoCell29: 4 declarations; nodes=32, integer positions=0", "kernel": "'OMA.RankTwoCell29.reverse' depends on axioms: [propext, Classical.choice, Quot.sound]"}
+{"length": 30, "source": "RankTwoCell30.lean", "sha256": "b6e5e1f61f23c6704e62a6e7b11bdfc9f8ae10dbc82468b1800a434eeeaf86db", "bytes": 1071, "elapsed": 13.62, "costs": "RankTwoCell30: 4 declarations; nodes=32, integer positions=0", "kernel": "'OMA.RankTwoCell30.reverse' depends on axioms: [propext, Classical.choice, Quot.sound]"}
+{"length": 31, "source": "RankTwoCell31.lean", "sha256": "35165191759f463a45183315b863c41ff76b30121675d8baa15272b990ec364b", "bytes": 1071, "elapsed": 17.78, "costs": "RankTwoCell31: 4 declarations; nodes=32, integer positions=0", "kernel": "'OMA.RankTwoCell31.reverse' depends on axioms: [propext, Classical.choice, Quot.sound]"}
+{"length": 32, "source": "RankTwoCell32.lean", "sha256": "5c8595f80c5b6b9bfbd795e916acc20097189cf2eeeb29ea18bdbd6ff9b5274a", "bytes": 1059, "elapsed": 17.67, "costs": "RankTwoCell32: 4 declarations; nodes=28, integer positions=0", "kernel": "'OMA.RankTwoCell32.reverse' depends on axioms: [propext, Classical.choice, Quot.sound]"}
+{"length": 7, "source": "RankTwoCell7.lean", "sha256": "900c60c23a9eceb909fee0efbb9ae4fd11b2693857be789e4212daa571e15685", "bytes": 317319, "elapsed": 577.52, "costs": "RankTwoCell7: 3020 declarations; nodes=8176, integer positions=264908", "kernel": "'OMA.RankTwoCell7.reverse' depends on axioms: [propext, Classical.choice, Quot.sound]"}
+{"length": 6, "source": "RankTwoCell6.lean", "sha256": "1f432fd8d800ae76364d710673a4f920521d5bf6389ae37463d834efaa27c423", "bytes": 341432, "elapsed": 708.28, "costs": "RankTwoCell6: 3218 declarations; nodes=9696, integer positions=335112", "kernel": "'OMA.RankTwoCell6.reverse' depends on axioms: [propext, Classical.choice, Quot.sound]"}
+{"length": 8, "source": "RankTwoCell8.lean", "sha256": "923c00c8e1c592b36c399c9286f2c43dad5cc45df13554e9c67c513633aeb711", "bytes": 352095, "elapsed": 738.03, "costs": "RankTwoCell8: 3350 declarations; nodes=8986, integer positions=279913", "kernel": "'OMA.RankTwoCell8.reverse' depends on axioms: [propext, Classical.choice, Quot.sound]"}
+{"length": 11, "source": "RankTwoCell11.lean", "sha256": "ab5485555eb5582dc0422413fbeee202ad37f506c1157c22b14ae366aeb990d9", "bytes": 306000, "elapsed": 744.15, "costs": "RankTwoCell11: 2828 declarations; nodes=8428, integer positions=208067", "kernel": "'OMA.RankTwoCell11.reverse' depends on axioms: [propext, Classical.choice, Quot.sound]"}
+{"length": 9, "source": "RankTwoCell9.lean", "sha256": "d08a09b083234cbe9d40a6a20fc855889a2f5833b7554780da6e615a405d4b76", "bytes": 347395, "elapsed": 812.56, "costs": "RankTwoCell9: 3282 declarations; nodes=9354, integer positions=269972", "kernel": "'OMA.RankTwoCell9.reverse' depends on axioms: [propext, Classical.choice, Quot.sound]"}
+{"length": 10, "source": "RankTwoCell10.lean", "sha256": "9c0a4fde6ee33d2490716e76c38cd5e080fd59a7defde49fd30e1b6ab8b2a734", "bytes": 359335, "elapsed": 1090.48, "costs": "RankTwoCell10: 3316 declarations; nodes=9818, integer positions=266968", "kernel": "'OMA.RankTwoCell10.reverse' depends on axioms: [propext, Classical.choice, Quot.sound]"}
+Checked RankTwoJoined245212.
+'OMA.RankTwoAll245212.iff_power' depends on axioms: [propext, Classical.choice, Quot.sound]
+exit=0; wall_seconds=2379.43
