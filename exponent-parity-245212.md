@@ -21,3 +21,19 @@ Now put \(T=\sum_i v(e_i+1)\). Both \(\sigma(n)\) and \(2n\tau(n)\) are divisibl
 DomTheDeveloper’s earlier [LeftToSolve reduction #1376](https://github.com/GuillaumeBAUD-coder/open-math-agents/pull/1376) already proved the equivalent exponent inequality for all inputs, including odd ones. The independent block proof here states it directly as a divisibility and extracts the 2-mod-4 corollary. This is a necessary condition; it does not settle A245212.
 
 The standalone [Lean proof](ParityResearch245212.lean) starts from the original Formal Conjectures definition. The main results are `OMA.ExponentParity245212.exponent_product` and `two_mod_four`. Both replay with only the three standard Lean axioms.
+
+## The exact orders and a sum-of-two-squares test
+
+Let \(E=\sum_i v(e_i+2)\), \(U=\sum_{e_i\text{ odd}}(v(p_i+1)-1)\), and \(H=1+a+v(a+1)\). The coarse lower bound above can be sharpened:
+
+| Comparison | Necessary value of \(E\) |
+| --- | --- |
+| \(U<H\) | \(r+U\) |
+| \(U>H\) | \(r+H\) |
+| \(U=H\) | strictly greater than \(r+H\) |
+
+In particular, **the odd part \(m\) of a solution is a sum of two squares if and only if \(E=r\)**. For example, no solution can have odd part \(p^{2j+1}q^{8b+2}u^4\), where \(p,q\) are distinct odd primes, \(p=3\bmod4\), and \(u\) is odd and coprime to both. Here \(E=r\), yet the prime \(p\) has odd exponent so the odd part is not a sum of two squares. Such inputs pass the earlier exponent inequality.
+
+To see the sharper test, the ordinary geometric sum on \(p^e\) has order \(v(e+1)\) for even \(e\), and \(v(e+1)+v(p+1)-1\) for odd \(e\). The latter follows by applying the two-adic lifting-the-exponent formula to \(p^{e+1}-1=(p-1)\sigma(p^e)\). In the original balance, subtracting \(T\) from the orders of the weighted sum, ordinary sum and right-hand side gives \(E-r,U,H\), respectively. If two integer summands have unequal orders, their sum has the smaller order. Equal orders cancel at least one more factor of two. This gives all three rows. Since \(H>0\), equality \(E=r\) is equivalent to \(U=0\): every prime congruent to 3 modulo 4 has even exponent. This is precisely the sum-of-two-squares criterion.
+
+The [standalone Lean file](OrdersResearch245212.lean) proves the table and its sum-of-two-squares equivalence from the original equation. [Reduction #18129](https://github.com/GuillaumeBAUD-coder/open-math-agents/pull/18129) uses the table and a reduced Mersenne denominator to narrow the nonsquare branch. The surviving cases remain open.
