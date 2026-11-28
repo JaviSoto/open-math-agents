@@ -1,11 +1,13 @@
-"""Decide both orientations of the A245212 family 2^k p^a q^3.
+"""Decide both orientations of the A245212 families with a cube or fourth power.
 
 The proof in cubic-power-family-245212.md shows K=k+1<320, a≤700,
 and min(p,q)≤5K in the cases left after the 71-divisor exclusion.
-The last base is inferred by exact division, not bounded in advance.
+Use --degree 4 for the fourth-power-family-245212.md cutoff. The last
+base is inferred by exact division, not bounded in advance.
 """
 from argparse import ArgumentParser
 from collections import Counter
+from concurrent.futures import ProcessPoolExecutor
 from math import isqrt
 
 
@@ -36,32 +38,41 @@ def last(cofactor, exponent, first_prime, counts):
         raise ArithmeticError(f"Exact candidate: {first_prime=}, {q=}, {exponent=}")
 
 
-def run(start, stop):
-    primes = [p for p in range(11, 5*stop + 1, 2) if prime(p)]
+def check_base(job):
+    p, degree, start, stop, first, last_exponent = job
     counts = Counter()
-    for K in range(start, stop + 1):
+    fixed = moments(p, degree)
+    # These moments do not depend on the dyadic exponent. Keep them local
+    # to one prime so the largest integers are released after that job.
+    variable = [(a, *moments(p, a)) for a in range(first, last_exponent + 1, 4)]
+    for K in range(max(start, (p+4)//5), min(stop, 2*p) + 1):
         F, G, T = moments(2, K - 1)
-        for p in primes:
-            if p > 5*K:
-                break
-            if 2*p <= K - 1:
-                continue
-            v, s, t = moments(p, 3)
-            cube = F*v, G*s, T*t
-            # A nonsquare odd core has an exponent 2 modulo 4. The other
-            # exponent here equals 3. Counts through 71 settle a<18.
-            for a in range(18, 701, 4):
-                last(cube, a, p, counts)
-                v, s, t = moments(p, a)
-                last((F*v, G*s, T*t), 3, p, counts)
+        small = F*fixed[0], G*fixed[1], T*fixed[2]
+        for a, v, s, t in variable:
+            last(small, a, p, counts)
+            last((F*v, G*s, T*t), degree, p, counts)
     return counts
+
+
+def run(start, stop, degree=3, workers=1):
+    first, last_exponent = (18, 700) if degree == 3 else (16, 1200)
+    jobs = [(p, degree, start, stop, first, last_exponent) for p in range(11, 5*stop+1, 2)
+            if prime(p) and 2*p >= start]
+    if workers == 1:
+        return sum(map(check_base, jobs), Counter())
+    with ProcessPoolExecutor(max_workers=workers) as pool:
+        return sum(pool.map(check_base, jobs, chunksize=1), Counter())
 
 
 if __name__ == "__main__":
     parser = ArgumentParser(description=__doc__)
+    parser.add_argument("--degree", type=int, choices=(3, 4), default=3)
+    parser.add_argument("--jobs", type=int, default=6)
     parser.add_argument("--from-k-plus-one", type=int, default=1)
-    parser.add_argument("--through-k-plus-one", type=int, default=319)
+    parser.add_argument("--through-k-plus-one", type=int)
     args = parser.parse_args()
-    if not 1 <= args.from_k_plus_one <= args.through_k_plus_one <= 319:
-        parser.error("use a subinterval of 1 through 319")
-    print(dict(run(args.from_k_plus_one, args.through_k_plus_one)), flush=True)
+    maximum = 319 if args.degree == 3 else 447
+    stop = maximum if args.through_k_plus_one is None else args.through_k_plus_one
+    if not 1 <= args.from_k_plus_one <= stop <= maximum or args.jobs < 1:
+        parser.error(f"use a subinterval of 1 through {maximum} and at least one worker")
+    print(dict(run(args.from_k_plus_one, stop, args.degree, args.jobs)), flush=True)
