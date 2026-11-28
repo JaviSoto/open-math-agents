@@ -19,6 +19,8 @@ The first replay builds 499 Lean modules and can take hours; subsequent runs reu
 
 On that last five-prime support, write $n=3\cdot 5^a7^b11^c13^d$. The [Lean theorem on exponents](FiveExponentBounds245212.lean) gives $a\ge18,\ b\ge12,\ c\ge7,\ d\ge6$. Consequently $n$ is divisible by $3\cdot5^{18}7^{12}11^7 13^6$, about $1.49\times10^{37}$. To see where the bounds come from, fix one of the four larger primes $p$, and write $C=\prod_{q\ne p,\,q>3} q/(q-1)$. The normalized sum is at most a weighted average of $(7/6)x(p,e)+(2/3)y(p,e)\le11/6$ and $(7/6)x(p,e)C$. The second endpoint therefore has to reach 2. Checking it at each indicated lower bound minus one, and using monotonicity in the exponent, excludes every smaller exponent. The Lean theorem takes the original OEIS equality as its hypothesis.
 
+The same [Lean file](FiveExponentBounds245212.lean) shows that at least one exponent belongs to one of these short ranges: $18\le a\le71$, $12\le b\le47$, $7\le c\le27$, or $6\le d\le23$. In fact, already at $(72,48,28,24)$ the first product $(7/6)\prod x$ exceeds 2. Every $x$ increases with its exponent, and the second product is nonnegative. These ranges form 129 one-exponent cases; the other three exponents in each case still need to be handled.
+
 ## Reduction to ten boxes
 
 For $p^e\parallel n$ write $T(p^e)=(e+1)p^e$, $x(p,e)=W(p^e)/T(p^e)$ and $y(p,e)=\sigma(p^e)/T(p^e)$. All three divisor functions are multiplicative, so at a solution $\prod x+\prod y=2$. We have

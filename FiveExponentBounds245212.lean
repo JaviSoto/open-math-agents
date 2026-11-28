@@ -54,9 +54,10 @@ theorem limits (e : Fin 4→ℕ)
     have b := mul_lt_mul_of_pos_right (end1.trans_lt (by norm_num : (11:ℚ)/6<2)) (lt_of_le_of_ne hT (Ne.symm t0))
     nlinarith only [a,b,score,h]
 
-theorem candidate (e : Fin 4 → ℕ)
+private theorem original_balance (e : Fin 4 → ℕ)
     (eqn : OeisA245212.a (3*total primes e)=(σ 1 (3*total primes e):ℤ)) :
-    ∀ i, floors i≤e i := by
+    (7/6:ℚ)*(∏ i,X (primes i) (some (e i)))+
+      (2/3:ℚ)*(∏ i,Y (primes i) (some (e i)))=2 := by
   let P : Fin 5 → ℕ := Fin.cons 3 primes
   let E : Fin 5 → ℕ := Fin.cons 1 e
   have prime : ∀ i,(P i).Prime := by decide
@@ -73,7 +74,30 @@ theorem candidate (e : Fin 4 → ℕ)
     Y 3 (some 1)*(∏ i,Y (primes i) (some (e i)))=2 at norm
   rw [show X 3 (some 1)=7/6 by decide +kernel,
     show Y 3 (some 1)=2/3 by decide +kernel] at norm
-  exact limits e norm
+  exact norm
+
+theorem candidate (e : Fin 4 → ℕ)
+    (eqn : OeisA245212.a (3*total primes e)=(σ 1 (3*total primes e):ℤ)) :
+    ∀ i, floors i≤e i := limits e (original_balance e eqn)
+
+/-- At least one exponent is in a finite strip even though there is no input size bound. -/
+theorem finite_strip (e : Fin 4 → ℕ)
+    (eqn : OeisA245212.a (3*total primes e)=(σ 1 (3*total primes e):ℤ)) :
+    ∃ i, floors i≤e i ∧ e i<4*floors i := by
+  have hp : ∀ i,1<primes i := by decide
+  have floor := candidate e eqn
+  by_contra! outside
+  have big (i : Fin 4) : 4*floors i≤e i := outside i (floor i)
+  have xle (i : Fin 4) : X (primes i) (some (4*floors i))≤X (primes i) (some (e i)) := by
+    have den : (1:ℚ)<(primes i:ℚ) := by exact_mod_cast hp i
+    exact add_le_add_right (div_le_div_of_nonneg_right (sub_le_sub_left (y_anti (hp i) (big i)) 1)
+      (sub_nonneg.mpr den.le)) 1
+  have prodle := prod_le_prod (s:=univ) (fun i _ => x_nonneg (hp i) (some (4*floors i))) (fun i _ => xle i)
+  have small : (2:ℚ)<7/6*(∏ i,X (primes i) (some (4*floors i))) := by decide +kernel
+  have scale := mul_le_mul_of_nonneg_left prodle (by norm_num : (0:ℚ)≤7/6)
+  have nonneg : 0≤∏ i,Y (primes i) (some (e i)) := prod_nonneg (fun i _ => y_nonneg (hp i) _)
+  linarith only [small,scale,nonneg,original_balance e eqn]
 
 #print axioms candidate
+#print axioms finite_strip
 end OMA.FiveExponentBounds245212
