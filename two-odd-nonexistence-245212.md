@@ -5,7 +5,7 @@ Let \(n>0\), let \(\tau(n)\) count its positive divisors, let \(\sigma(n)\) be t
                  W(n)+\sigma(n)=2n\tau(n)
                  \quad\Longleftrightarrow\quad n=2^k .
 \]
-**This equivalence holds whenever at most two distinct odd primes divide \(n\).** There is no bound on \(n\), the primes, or their exponents. Any counterexample to the full conjecture must contain at least three distinct odd primes. This is a written proof with reproducible integer certificates. Several parts are independently checked in Lean; the entire result is not yet a single Lean theorem.
+**This equivalence holds whenever at most two distinct odd primes divide \(n\).** There is no bound on \(n\), the primes, or their exponents. Any counterexample to the full conjecture must contain at least three distinct odd primes. Lean now verifies the complete equivalence in [`OMA.RankTwoAll245212.iff_power`](RankTwoAll245212.lean), with only `propext`, `Classical.choice`, and `Quot.sound`. The [source archive](rank-two-complete-proof-245212.tar.gz) contains every research dependency and a README with the replay command. It uses the project's pinned Formal Conjectures checkout; it contains no compiled proofs. The elementary integer calculation below is an independent check.
 
 ## Reduction to one finite rectangle
 
