@@ -10,7 +10,7 @@ from math import prod, isqrt
 from smooth_boxes_245212 import local
 
 
-def runs(p):
+def runs(p, dyadic=(1,None), node_budget=None):
     nodes = 0
     maxima = [0]*4
 
@@ -18,11 +18,15 @@ def runs(p):
     def moving(q,e):
         if q is None:
             return (F(1), F(0) if e is None else F(1,e+1))
-        return local(q,e)
+        # This estimate only chooses a split. Certified endpoints use yband.
+        if dyadic==(1,None) or e is None or e<32:
+            return local(q,e)
+        y=F(q,(q-1)*(e+1))
+        return 1+(1-y)/(q-1),y
 
     def corners(xs):
         a,b,c,q=xs
-        v=(local(2,a),local(p,b),moving(q,c))
+        v=(moving(2,a),moving(p,b),moving(q,c))
         return prod(x for x,_ in v), prod(y for _,y in v)
 
     @lru_cache(None)
@@ -40,6 +44,8 @@ def runs(p):
     def evaluate(box):
         nonlocal nodes
         nodes+=1
+        if node_budget is not None and nodes>node_budget:
+            raise RuntimeError(f"Unfinished at box {box}; exhausted {node_budget} nodes")
         end=[(lo,) if hi==lo else (lo,hi) for lo,hi in box]
         lo=tuple(b[0] for b in box);hi=tuple(b[1] for b in box)
         xx=[]; yy=[]
@@ -75,7 +81,7 @@ def runs(p):
         right=evaluate(box[:j]+((m+1,h),)+box[j+1:])
         return j,m,left,right
 
-    tree=evaluate(((1,None),(1,None),(1,None),(p+1,None)))
+    tree=evaluate((dyadic,(1,None),(1,None),(p+1,None)))
     return nodes,maxima,tree
 
 
