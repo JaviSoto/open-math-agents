@@ -1,0 +1,31 @@
+{
+  "source": "proofs/OeisA245212.conjecture.R1.H1.R1.H2.R1.H2.lean",
+  "sourceBytes": 519143,
+  "formalConjecturesCommit": "9097e2f90e66d2f6244209cb1c07f7120d17ec53",
+  "checkerScriptSha256": "c68258171d808f51e7ddbab456fee34b6122a182bfb6f623dcb387547db213d0",
+  "lintScriptSha256": "2df470ecba52a506c4c944fda6f62d55eca8568def6e26b819367483dc456e31",
+  "checker": {
+    "file": "proofs/OeisA245212.conjecture.R1.H1.R1.H2.R1.H2.lean",
+    "type": "step",
+    "problem": "OeisA245212.conjecture.R1.H1.R1.H2.R1.H2",
+    "ok": true,
+    "kind": "open",
+    "polarity": "proof",
+    "theorem": "OMA.solution",
+    "imports": "OMAReductions.R_OeisA245212_conjecture_R1_H1_R1_H2_R1",
+    "errors": [],
+    "needsReduction": "OeisA245212.conjecture.R1.H1.R1.H2.R1",
+    "verdict": "accepted",
+    "reason": "kernel accepted; axioms within propext, Classical.choice, Quot.sound",
+    "log": "'OMA.solution' depends on axioms: [propext, Classical.choice, Quot.sound]"
+  },
+  "metrics": {
+    "seconds": 1490.28,
+    "peakMiB": 3701.2,
+    "limitMiB": 8000,
+    "memoryStop": false,
+    "samples": 3623,
+    "exit": 0,
+    "sha256": "459273eba241725a2c731c1224e205b551283d67b08f05eccc8d3de2bdbcb2ab"
+  }
+}
