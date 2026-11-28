@@ -7,6 +7,8 @@ n^2\mid\operatorname{num} B_{(n-1)/2}.\quad}$$
 
 Here $\operatorname{num}$ is the reduced numerator. This holds without assuming that $n$ is prime or squarefree. With the published irregular-pair tables, the reformulation excludes every $n<126,701,535,232$. The conjecture for all $n$ remains open.
 
+The equivalence itself is a specialization of [Kellner, Proposition 8.5](https://arxiv.org/pdf/math/0409223#page=36): for every positive even $e$ and positive $m$, one has $m^{r+1}\mid S_e(m)$ exactly when $m^r\mid\operatorname{num}B_e$, for $r=1,2$. Take $e=(n-1)/2$, $m=n$, $r=2$. We give an independent Lean proof and use it, together with the additional local half-sum test below, to obtain the numerical exclusion.
+
 ## The equivalence
 
 Set $e=(n-1)/2$, so $e$ is even and $2e+1=n$. The input $n=5$ is immediate. Otherwise $e\ge4$. For each prime $p\mid n$, both $e$ and $e+1$ are units modulo $p$. Through the first two powers of $n$, Faulhaber's formula and von Staudt–Clausen give

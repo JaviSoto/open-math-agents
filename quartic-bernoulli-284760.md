@@ -9,6 +9,8 @@ $$
 
 The indices at $n=1$ use natural subtraction, as in the formal statement. The conjecture concerns $n>1$. For prime $n$, the criterion follows from [Meštrović, equation (19)](https://cs.uwaterloo.ca/journals/JIS/VOL17/Mestrovic/mes4.pdf). Here the criterion includes arbitrary composites and repeated factors.
 
+For the even-power step in the argument, [Kellner, Proposition 8.5](https://arxiv.org/pdf/math/0409223#page=36), had already proved that $m^{r+1}\mid S_e(m)$ if and only if $m^r\mid\operatorname{num}B_e$ for positive even $e$, positive $m$, and $r=1,2$. The original exponent $n-2$ here is odd when $n$ is odd. Our verification includes that odd-power step, the corresponding higher-order tests at prime divisors, and an independent formal derivation of the Bernoulli criterion used below.
+
 An explicit computation using published irregular-index data gives two consequences for [OEIS A284760](https://oeis.org/A284760): **there is no counterexample for $1<n\le10^{11}$**, and **a composite counterexample must be at least $400,315,058,243$**. More generally, no integer whose prime divisors are all below $63,917,461$ is a counterexample. The computation and its coverage are described below. The full conjecture remains open. The neighbouring [cubic conjecture A284759](https://github.com/lefttosolve2/open-math-agents/pull/30424) has a different answer.
 
 ## Why the numerator is decisive

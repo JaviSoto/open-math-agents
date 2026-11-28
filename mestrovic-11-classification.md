@@ -36,6 +36,8 @@ which is impossible.
 
 Thus $G/n^4$ is $p$-integral at every $p\mid n$ exactly when $B_e/n$ is. This proves the second line, including the full multiplicities in $n$. Since $n\mid\operatorname{num}B_e$ forces $B_e$ to be $p$-integral for each $p\mid n$, the second line implies the first. Reflection to cubic order and Faulhaber's formula identify the second line with $n^3\mid S_{n-2}(n)$.
 
+For the passage between an even-power sum and its Bernoulli numerator, see also [Kellner, Proposition 8.5](https://arxiv.org/pdf/math/0409223#page=36), which covers the corresponding square and cube divisibility tests for all positive even exponents.
+
 ## More than two sevenths of the integers
 
 For an odd prime $p$, its forbidden condition on odd $n$ is a single class, $n\equiv3p\pmod{p(p-1)}$. Let $D_y$ be the periodic set obtained by testing all $p\le y$ on odd $n$. For $y\ge3$, every member of $D_y$ is coprime to $3$. If an untested $p$ rules out $n\in D_y$, write $n=pt$. Then $t\equiv3\pmod{p-1}$, and $t\ne3$, so $t\ge p+2$ for $p\ge5$. For $n\le X$ there are therefore at most $\sqrt X$ possible untested primes. Their classes contain at most
