@@ -53,6 +53,22 @@ The [Lean support theorem](FiveSquareThree245212.lean) starts from the original 
 
 Here $x(3,2)=34/27$ and $y(3,2)=13/27$. If the product of the four remaining prime caps is less than $27/17$, both endpoints of the interval bound are below 2. Applying this to the smallest possible primes beyond each proposed threshold gives the table; no upper bound on the exponents is used. These supports have not been excluded by this theorem.
 
+**The $q=19$ row is impossible by an additional finite computation.** Its only possible last primes are $23,29,31$. As a result, if $3^2\parallel n$, the fourth prime of a five-prime solution can only be 11, 13, or 17.
+
+For each of the three supports let $A=34/27$ and, for each tail prime $p$, let $C$ be the product of the other three tail caps. The interval bound used above forces $ACx(p,e)\ge2$: the competing endpoint $Ax(p,e)+(13/27)y(p,e)$ is affine in $y$ and is below 2 at both endpoints 0 and 1. If we already know $e\ge h$, then $y(p,e)\ge(1+p^{-1}+\cdots+p^{-h})/(e+1)$. Thus
+
+$$e+1\ \ge\ \frac{AC(1+p^{-1}+\cdots+p^{-h})}{ACp-2(p-1)}.$$
+
+All denominators here are positive. Starting at $h=1$, apply this three times, using at most the terms through $p^{-8}$. This gives the lower bounds below. Five times these bounds makes the first product exceed 2 even when each $x$ is replaced by its lower bound obtained from $y\le p/((p-1)(e+1))$. At least one exponent therefore lies below five times its indicated floor.
+
+| $r$ | Floors on exponents of $5,7,19,r$ | Height bound | Two-exponent boxes |
+|---:|---|---:|---:|
+| 23 | 19, 12, 4, 3 | 11,616 | 1,765,316 |
+| 29 | 65, 43, 14, 9 | 13,536 | 7,088,492 |
+| 31 | 163, 109, 36, 21 | 14,176 | 18,628,036 |
+
+The [Python replay](five_square_cases_245212.py) computes those bounds as exact fractions and checks all three supports, using $W(3^2)=34$ and $\sigma(3^2)=13$ in the cofactor congruences. Only two tuples pass the first pair of prime tests, both for $r=23$; neither passes the remaining tests. Run `python3 five_square_cases_245212.py` to reproduce the calculation. The [C++ replay](five_prime_replay_245212.cpp) accepts 23, 29, or 31 as an argument for these same supports. The table of possible supports above is Lean-verified; this further elimination uses the written height argument and exact computation.
+
 ## Reduction to ten boxes
 
 For $p^e\parallel n$ write $T(p^e)=(e+1)p^e$, $x(p,e)=W(p^e)/T(p^e)$ and $y(p,e)=\sigma(p^e)/T(p^e)$. All three divisor functions are multiplicative, so at a solution $\prod x+\prod y=2$. We have

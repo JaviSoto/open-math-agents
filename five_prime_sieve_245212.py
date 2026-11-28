@@ -25,11 +25,11 @@ def direction(w, s, p, modulus):
 
 
 class ResidueTable:
-    def __init__(self, p, q, ceiling):
+    def __init__(self, p, q, ceiling, floors=FLOORS, moduli=None):
         self.p = p
-        self.modulus = p**FLOORS[p]
+        self.modulus = moduli[p] if moduli is not None else p**floors[p]
         self.groups = defaultdict(list)
-        for e in range(FLOORS[q], ceiling + 1):
+        for e in range(floors[q], ceiling + 1):
             w, s = residues(q, e, self.modulus)
             common = gcd(gcd(w, s), self.modulus)
             self.groups[common].append((e, w // common, s // common))
@@ -56,36 +56,43 @@ class ResidueTable:
         return result
 
 
-def scan(i, start, stop, ceiling):
-    r, s, j = (p for p in PRIMES if p != i)
-    ts = ResidueTable(r, s, ceiling)
-    tr = ResidueTable(s, r, ceiling)
+def scan(i, start, stop, ceiling, *, primes=PRIMES, floors=FLOORS, three_exponent=1, verbose=True):
+    r, s, j = (p for p in primes if p != i)
+    # A smaller power remains a necessary test. Limiting its size speeds up
+    # the case where the proved minimum exponent is in the hundreds.
+    moduli = {p:p**min(floors[p],20) for p in primes}
+    t0, w0, z0 = moment(3,three_exponent)
+    ts = ResidueTable(r, s, ceiling, floors, moduli)
+    tr = ResidueTable(s, r, ceiling, floors, moduli)
     def factors(p, q, e):
-        return residues(q, e, p**FLOORS[p])
-    jrows = [(v, factors(r, j, v), factors(s, j, v)) for v in range(FLOORS[j], ceiling+1)]
+        return residues(q, e, moduli[p])
+    jrows = [(v, factors(r, j, v), factors(s, j, v)) for v in range(floors[j], ceiling+1)]
     tested = 0
     survivors = 0
     for u in range(start, stop+1):
         w1, z1 = factors(r, i, u)
         w2, z2 = factors(s, i, u)
         for v, (w3, z3), (w4, z4) in jrows:
-            tests = ts.hits(7*w1*w3, 4*(r-1)*z1*z3)
+            tests = ts.hits(w0*w1*w3, z0*(r-1)*z1*z3)
             if not tests:
                 continue
-            testr = tr.hits(7*w2*w4, 4*(s-1)*z2*z4)
+            testr = tr.hits(w0*w2*w4, z0*(s-1)*z2*z4)
             for er, es in product(testr, tests):
                 exps = {i:u,j:v,r:er,s:es}
                 tested += 1
                 for p in (i,j):
                     pairs = [factors(p,q,e) for q,e in exps.items() if q != p]
-                    if (7*prod(w for w,_ in pairs)-4*(p-1)*prod(z for _,z in pairs))%p**FLOORS[p]:
+                    if (w0*prod(w for w,_ in pairs)-z0*(p-1)*prod(z for _,z in pairs))%moduli[p]:
                         break
                 else:
                     survivors += 1
                     t,w,z = map(prod, zip(*(moment(q,e) for q,e in exps.items())))
-                    if 7*w+4*z == 12*t:
+                    if w0*w+z0*z == 2*t0*t:
                         raise ArithmeticError(f"solution: {exps}")
-        print(f"p={i} e={u}: tested {tested} pairs; {survivors} reached exact equality test",flush=True)
+        if verbose:
+            print(f"p={i} e={u}: tested {tested} pairs; {survivors} reached exact equality test",flush=True)
+    ts.index.cache_clear()
+    return (stop-start+1)*len(jrows), tested, survivors
 
 
 if __name__ == "__main__":
