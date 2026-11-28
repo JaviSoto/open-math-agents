@@ -8,6 +8,8 @@ Write $W(s)=\sum_{d\mid s}d\tau(d)$. The sequence's definition says that the equ
 
 More generally the same Lean file proves `power_count`: whenever the odd part of a solution is a $2^j$-th power with $j\ge1$, its divisor count is $1\bmod 2^{j+1}$. Write $m=v^{2^j}$. The dyadic theorem gives even $\Omega(v)$, and the local divisor counts have product $1+2^j\Omega(v)\pmod{2^{j+1}}$. The modulo-eight result above uses the additional fact that odd divisor count forces a fourth power at a solution.
 
+If $\tau(m)$ is **even**, then some prime $\ell\equiv3\pmod4$ divides $\tau(m)$. In particular it cannot be a positive power of two. For the [Lean proof](EvenCountResidue245212.lean), some prime of $m$ must have odd exponent, since $\tau(m)=\prod(e+1)$ is even. The [exponent obstruction](ParityResearch245212.lean) then gives a (different) exponent $e\equiv2\pmod4$. Its factor $e+1\equiv3\pmod4$ must have at least one prime factor congruent to 3 modulo 4. Both the odd and even conclusions apply to arbitrary positive $n$, independent of the finite search.
+
 ## A finite list for each exponent pattern
 
 Set $t=\tau(m)$. Enumerate all **ordered** exponent lists $e_1,\ldots,e_s\ge1$ satisfying $\prod(e_i+1)=t$. Bases will be primes in strictly increasing order. We discard lists failing the [known divisibility](https://github.com/GuillaumeBAUD-coder/open-math-agents/pull/1376) $2^s\mid\prod(e_i+2)$. If all exponents are even, the [square-to-fourth-power condition](dyadic-power-245212.md) also requires all of them to be divisible by four; the precise Lean theorem is `OMA.DyadicPower245212.square_root_is_square` in [DyadicResearch245212.lean](DyadicResearch245212.lean). The first three-base case left by these tests is $t=18$, with exponents $1,2,2$ in any order.
