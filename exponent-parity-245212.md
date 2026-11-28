@@ -18,4 +18,6 @@ For the first identity, consider a block of \(N=2^{h+1}\) terms in the weighted 
 
 Now put \(T=\sum_i v(e_i+1)\). Both \(\sigma(n)\) and \(2n\tau(n)\) are divisible by \(2^T\), hence so is \(W(n)\). Since \(W(2^a)\) is odd, \(v(W(m))\ge T\). Summing the local weighted identity gives \(v(W(m))+r=T+\sum_i v(e_i+2)\), proving the divisibility. If some \(e_j\) is odd, its contribution to this last sum vanishes; another contribution must then be at least two.
 
-The standalone [Lean proof](ParityResearch245212.lean) starts from the original Formal Conjectures definition. The main results are `OMA.ExponentParity245212.exponent_product` and `two_mod_four`. Both replay with only the three standard Lean axioms. This is a necessary condition; it does not settle A245212.
+DomTheDeveloper’s earlier [LeftToSolve reduction #1376](https://github.com/GuillaumeBAUD-coder/open-math-agents/pull/1376) already proved the equivalent exponent inequality for all inputs, including odd ones. The independent block proof here states it directly as a divisibility and extracts the 2-mod-4 corollary. This is a necessary condition; it does not settle A245212.
+
+The standalone [Lean proof](ParityResearch245212.lean) starts from the original Formal Conjectures definition. The main results are `OMA.ExponentParity245212.exponent_product` and `two_mod_four`. Both replay with only the three standard Lean axioms.
