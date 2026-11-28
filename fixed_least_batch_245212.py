@@ -8,6 +8,7 @@ intervals need the separate divisor-count method rather than this direct scan.
 """
 from argparse import ArgumentParser
 from pathlib import Path
+import re
 
 from five_fast_batch_245212 import verify
 from rank_three_middle_blocks_245212 import joins, moments
@@ -17,7 +18,7 @@ def coefficients(l, k, a):
     return tuple(x*y for x, y in zip(moments(2, k), moments(l, a)))
 
 
-def sources(l, k, a, span, max_prime):
+def sources(l, k, a, span, max_prime, *, cut_start=False):
     weight, sigma, mass = coefficients(l, k, a)
     gap = 2*mass - weight
     if gap <= 0:
@@ -27,7 +28,7 @@ def sources(l, k, a, span, max_prime):
     if end > max_prime:
         raise ValueError(f'prefix ({l},{k},{a}) needs a prime interval through {end:,}')
     factor_max = max(l, k+1, a+1)
-    start = l+1
+    start = max(l+1,weight//(2*gap)+1) if cut_start else l+1
     h = 2**k*l**a
     stem = f'FixedLeast{l}K{k}A{a}'
     ns = f'OMA.{stem}'
@@ -53,9 +54,51 @@ def sources(l, k, a, span, max_prime):
             f'  OMA.FixedLeastPair245212.certify (L:={start}) (M:={factor_max}) '
             f'(by decide +kernel) (by decide) pp qp gt pq bp cp (by omega) '
             f'(by decide +kernel) {check}\n#print axioms original\n')
+    extra_import = ''
+    if cut_start:
+        extra_import = 'import FixedLeastStart245212\n'
+        body = body.replace(' :=\n  OMA.FixedLeastPair245212.certify', ' := by\n  intro hit\n  apply OMA.FixedLeastPair245212.certify')
+        body = body.replace('cp (by omega)', f'cp (by have h:=OMA.FixedLeastStart245212.fixed (by decide : Nat.Prime {l}) (by decide) pp qp gt pq bp hit; change {weight//(2*gap)+1}≤p at h; omega)')
+        body = body.replace('\n#print axioms', ' hit\n#print axioms')
     data[stem] = (imports, ''.join(f'import {x}\n' for x in imports)+
-                  'import FixedLeastPair245212\n'+header+body+ending)
+                  extra_import+'import FixedLeastPair245212\n'+header+body+ending)
     return data
+
+
+def pole_windows(l, k, a, span, max_prime, output, cut_start=False):
+    """Reuse already proved fast intervals; check only missing intervals in the new predicate.
+
+    Every reused interval is imported by its exact original proposition, and the
+    published bundle includes its source. A previous interrupted batch therefore
+    does not have to recompute its healthy intervals to try a better pole bound.
+    """
+    original = sources(l, k, a, span, max_prime, cut_start=cut_start)
+    if not original:
+        return {}
+    stem = f'FixedLeast{l}K{k}A{a}'
+    dependencies, root_source = original.pop(stem)
+    graph = {}
+    imports = []
+    for name, (_, source) in original.items():
+        old_source = output/(name+'.lean')
+        if (output/(name+'.olean')).is_file() and old_source.is_file() and old_source.read_text() == source:
+            imports.append(name)
+            continue
+        new_name = name+'Pole'
+        source = source.replace('import FixedLeastPair245212', 'import FixedLeastPoleWindows245212')
+        source = source.replace('(fast ', '(OMA.FixedLeastPoleWindows245212.either ')
+        graph[new_name] = ([], source)
+        imports.append(new_name)
+    for name, imported in zip(dependencies, imports):
+        if name == imported:
+            label = 'block'+name.rsplit('S', 1)[1]
+            root_source = re.sub(r'\b'+label+r'\b', f'(OMA.FixedLeastPoleWindows245212.old_interval {label})', root_source)
+        else:
+            root_source = root_source.replace('import '+name+'\n', 'import '+imported+'\n')
+    root_source = root_source.replace('import FixedLeastPair245212','import FixedLeastPoleWindows245212')
+    root_source = root_source.replace('OMA.FixedLeastPair245212.certify','OMA.FixedLeastPoleWindows245212.certify')
+    graph[stem] = ([i for i in imports if i in graph], root_source)
+    return graph
 
 
 if __name__ == '__main__':
@@ -70,6 +113,8 @@ if __name__ == '__main__':
     cli.add_argument('--jobs', type=int, choices=range(1,13), default=4)
     cli.add_argument('--seconds', type=int, default=240)
     cli.add_argument('--max-prime', type=int, default=10000)
+    cli.add_argument('--pole-windows', action='store_true', help='reuse checked intervals and split difficult Euler-pole cases')
+    cli.add_argument('--cut-start', action='store_true', help='start at the proven first-prime lower bound')
     args = cli.parse_args()
     if min(args.least-2, args.first_a, args.span, args.seconds) < 1 or args.first_k < 0:
         cli.error('Use an odd prime at least three, nonnegative k and positive exponents and limits.')
@@ -79,7 +124,10 @@ if __name__ == '__main__':
     graph = {}
     for k in range(args.first_k, args.last_k+1):
         for a in range(args.first_a, args.last_a+1):
-            graph.update(sources(args.least, k, a, args.span, args.max_prime))
+            if args.pole_windows:
+                graph.update(pole_windows(args.least, k, a, args.span, args.max_prime, output,args.cut_start))
+            else:
+                graph.update(sources(args.least, k, a, args.span, args.max_prime,cut_start=args.cut_start))
     if not graph:
         cli.error('No prefixes in range satisfy the strict weight inequality.')
     for name, (_, source) in graph.items():

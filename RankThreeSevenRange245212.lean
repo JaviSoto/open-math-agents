@@ -47,6 +47,22 @@ import FixedLeast7K6A45
 import FixedLeast7K6A46
 import FixedLeast7K6A47
 import FixedLeast7K6A48
+import FixedLeast7K6A49
+import FixedLeast7K6A50
+import FixedLeast7K6A51
+import FixedLeast7K6A52
+import FixedLeast7K6A53
+import FixedLeast7K6A54
+import FixedLeast7K6A55
+import FixedLeast7K6A56
+import FixedLeast7K6A57
+import FixedLeast7K6A58
+import FixedLeast7K6A59
+import FixedLeast7K6A60
+import FixedLeast7K6A61
+import FixedLeast7K6A62
+import FixedLeast7K6A63
+import FixedLeast7K6A64
 
 /-! Remaining multiplicities of seven on the original rank-three input. -/
 namespace OMA.RankThreeSevenRange245212
@@ -56,7 +72,7 @@ open scoped ArithmeticFunction.sigma
 theorem bounds {a p q b c : ℕ} (ap : 0<a) (pp : p.Prime) (qp : q.Prime)
     (gt : 7<p) (pq : p<q) (bp : 0<b) (cp : 0<c)
     (hit : OeisA245212.a (2^6*7^a*p^b*q^c)=(σ 1 (2^6*7^a*p^b*q^c):ℤ)) :
-    49≤a ∧ a≤127 := by
+    65≤a ∧ a≤127 := by
   constructor
   · by_contra! smaller
     interval_cases a
@@ -108,6 +124,22 @@ theorem bounds {a p q b c : ℕ} (ap : 0<a) (pp : p.Prime) (qp : q.Prime)
     · exact OMA.FixedLeast7K6A46.original pp qp gt pq bp cp hit
     · exact OMA.FixedLeast7K6A47.original pp qp gt pq bp cp hit
     · exact OMA.FixedLeast7K6A48.original pp qp gt pq bp cp hit
+    · exact OMA.FixedLeast7K6A49.original pp qp gt pq bp cp hit
+    · exact OMA.FixedLeast7K6A50.original pp qp gt pq bp cp hit
+    · exact OMA.FixedLeast7K6A51.original pp qp gt pq bp cp hit
+    · exact OMA.FixedLeast7K6A52.original pp qp gt pq bp cp hit
+    · exact OMA.FixedLeast7K6A53.original pp qp gt pq bp cp hit
+    · exact OMA.FixedLeast7K6A54.original pp qp gt pq bp cp hit
+    · exact OMA.FixedLeast7K6A55.original pp qp gt pq bp cp hit
+    · exact OMA.FixedLeast7K6A56.original pp qp gt pq bp cp hit
+    · exact OMA.FixedLeast7K6A57.original pp qp gt pq bp cp hit
+    · exact OMA.FixedLeast7K6A58.original pp qp gt pq bp cp hit
+    · exact OMA.FixedLeast7K6A59.original pp qp gt pq bp cp hit
+    · exact OMA.FixedLeast7K6A60.original pp qp gt pq bp cp hit
+    · exact OMA.FixedLeast7K6A61.original pp qp gt pq bp cp hit
+    · exact OMA.FixedLeast7K6A62.original pp qp gt pq bp cp hit
+    · exact OMA.FixedLeast7K6A63.original pp qp gt pq bp cp hit
+    · exact OMA.FixedLeast7K6A64.original pp qp gt pq bp cp hit
   · by_contra! larger
     have cop (u : ℕ) (pr : u.Prime) (large : 7<u) : (2^6*7^a).Coprime u :=
       (((coprime_primes prime_two pr).mpr (by omega)).pow_left 6).mul_left
@@ -121,7 +153,7 @@ theorem bounds {a p q b c : ℕ} (ap : 0<a) (pp : p.Prime) (qp : q.Prime)
 theorem original {n : ℕ} (pos : 0<n) (rank : (n.primeFactors.erase 2).card=3)
     (hit : OeisA245212.a n=(σ 1 n:ℤ)) :
     64∣n ∧ ¬3∣n ∧ ¬5∣n ∧
-      (7∣n → n.factorization 2=6 ∧ 49≤n.factorization 7 ∧ n.factorization 7≤127) := by
+      (7∣n → n.factorization 2=6 ∧ 65≤n.factorization 7 ∧ n.factorization 7≤127) := by
   obtain ⟨dy,no3,no5,dy6⟩:=OMA.RankThreeSevenWitness245212.location pos rank hit
   refine ⟨dy,no3,no5,?_⟩;intro seven
   obtain ⟨p,q,b,c,pp,qp,gt,pq,bp,cp,rep⟩:=OMA.RankThreeSevenWitness245212.witness pos rank hit seven
