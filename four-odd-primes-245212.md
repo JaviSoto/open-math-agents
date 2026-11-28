@@ -1,8 +1,21 @@
 # An odd solution to OEIS A245212 needs at least five distinct primes
 
-**Theorem (computer-assisted).** The only positive odd integer $n$ with at most four distinct prime divisors that satisfies
+**Theorem (verified in Lean).** The only positive odd integer $n$ with at most four distinct prime divisors that satisfies
 $$W(n)+\sigma(n)=2n\tau(n),\qquad W(n)=\sum_{d\mid n}d\tau(d),$$
 is $n=1$. The prime multiplicities, the primes themselves, and $n$ are unrestricted in this statement. This settles the four-odd-prime branch of [Křížek's A245212 conjecture](https://oeis.org/A245212); it does not settle the full conjecture.
+
+**[Download the complete Lean source](odd-four-lean-source.zip).** The theorem is `OMA.OddSupportClass245212.odd_four` in `src/OddFourComplete245212.lean`. It starts from the original OEIS definition in Formal Conjectures. The source archive includes every prime-support certificate and a replay script; it contains no precompiled proofs. The final axiom audit lists only `propext`, `Classical.choice`, and `Quot.sound`. The exact-arithmetic search below gives a separate check.
+
+Extract the archive and, from the [pinned Formal Conjectures checkout](https://github.com/google-deepmind/formal-conjectures/tree/9097e2f90e66d2f6244209cb1c07f7120d17ec53), run:
+
+```sh
+lake build FormalConjectures.OEIS.245212
+lake env python3 /path/to/extracted/verify.py
+```
+
+The first replay builds 499 Lean modules and can take hours; subsequent runs reuse unchanged results. Use `--jobs 1` to check one module at a time.
+
+**Five or six primes.** Any odd solution greater than one with at most six distinct prime factors must be divisible by three. Otherwise its Euler product is at most the product for 5, 7, 11, 13, 17, 19, which is $323323/165888<2$. With exactly five primes and just one factor of three, the only possible prime support is **3, 5, 7, 11, 13**. If the largest prime were at least 17, the four remaining Euler factors would have product at most $1309/768<12/7$; the interval bound below with $x(3,1)=7/6$ and $y(3,1)=2/3$ then gives a strict contradiction. These [additional Lean corollaries](OddSixWithoutThree245212.lean) import the standalone three-prime file. The unrestricted five- and six-prime cases remain open.
 
 ## Reduction to ten boxes
 
