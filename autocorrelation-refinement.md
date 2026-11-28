@@ -9,7 +9,17 @@ C_{1a}\le \frac{2521185203055038082778541122310144}{1677721598748060303593553797
 =1.5027434855320348178340682824\ldots .
 \]
 
-The [previous tabulated bound](https://teorth.github.io/optimizationproblems/constants/1a.html) was \(1.50274348670958337974\ldots\). The numerical change is about \(1.18\times10^{-9}\). The refinement theorem concerns **every** grid construction, regardless of this particular numerical search.
+This beats the Atris row on the [published table](https://teorth.github.io/optimizationproblems/constants/1a.html) by about \(1.18\times10^{-9}\), but is **not a record**. The table omits newer constructions by Josh Hurst, Will Kirschenman, and [Willy Nilsson](https://github.com/GuillaumeBAUD-coder/open-math-agents/pull/6085). Nilsson's supplementary 1,048,576-bin bound is \(1.502664613406125389\ldots\). The distinction was missed in the first version of this note.
+
+Applying the theorem below to [Nilsson's 524,288-bin witness](https://github.com/WillyNilsson/open-math-agents/tree/7e53f325b7dbdc455c6a7f33ce033a6538e2f091) gives \(C_{1a}\le 1.502664613406073749\) (rounded up), already strictly better than the cited finer witness. Nilsson used a constant unequal split; the position-dependent tilt below gives a **uniform strict** improvement for every input, including those that peak on a plateau. A [separate argument](autocorrelation-arbitrary-steps.md) extends nonattainment to every finite partition, including irrational breakpoints.
+
+Evaluating the resulting 1,048,576 heights directly gives a slightly sharper bound than the uniform estimate:
+\[
+C_{1a}\le \frac{467861234529238405904278840457376915129401745798071324510812329782387747}
+{311354396952722946106025126696635785580472195082031006396176252325068800}
+=1.5026646134060536868436958624941\ldots .
+\]
+The exact improvement over Nilsson's million-bin example is about \(7.17\times10^{-14}\). Download his pinned [witness.json](https://raw.githubusercontent.com/WillyNilsson/open-math-agents/7e53f325b7dbdc455c6a7f33ce033a6538e2f091/witness.json) and run [nilsson_refinement.py](nilsson_refinement.py) on it, once normally and once with `--ntt` (NumPy). Both methods check its digest, generate the tilted heights, and agree on the exact fraction and the maximizing lag 1,732,057. The two checks are exact integer computations, separate from the general Lean theorem.
 
 ## The construction
 

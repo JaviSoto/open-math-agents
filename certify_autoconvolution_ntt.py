@@ -48,7 +48,12 @@ def exact_score(a):
     upper = n*max(a)**2
     product = 1
     coeff = [0]*(2*n-1)
-    for p, g in [(998244353,3),(469762049,3),(167772161,3),(754974721,11),(1004535809,3)]:
+    for p, g in [(998244353,3),(469762049,3),(167772161,3),(754974721,11),(1004535809,3),
+                 (2013265921,31),(1811939329,13),(2113929217,5),(1224736769,3),(1107296257,10)]:
+        if (p-1)%m:
+            continue
+        root=pow(g,(p-1)//m,p)
+        assert pow(root,m,p)==1 and (m==1 or pow(root,m//2,p)!=1)
         raw = np.zeros(m,dtype=np.int64)
         raw[:n] = [h % p for h in a]
         ft = transform(raw,p,g,False)
