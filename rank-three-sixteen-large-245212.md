@@ -86,3 +86,8 @@ Its final declaration is `OMA.RankThreeSixteenLarge245212.original`, on the
 original natural number n with `n.factorization 2=4`. The code tests
 primality in the kernel and includes a separate proof that the 298 listed
 bounded supports exhaust the Euler inequality.
+
+The complete 461,062-byte single-file replay took 22 minutes 29 seconds
+on the author's machine (2,626 MiB peak physical memory). Its axiom report
+was `[propext, Classical.choice, Quot.sound]`; SHA-256 of the checked source:
+`24fff98a4a7ea649d6679757070c5e2b895d5f8738ea4bf1fb939fa122538068`.
