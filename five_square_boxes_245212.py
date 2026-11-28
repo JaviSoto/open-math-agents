@@ -27,7 +27,14 @@ def intervals(p,lo,hi):
 
 def remaining(q,r):
     primes = (5,7,q,r)
-    assert 7<q<r and prime(q) and prime(r)
+    if not (7 < q < r and prime(q) and prime(r)):
+        raise ValueError("expected distinct primes 7 < q < r")
+    # The normalized score is affine in each Y, with X=(p-Y)/(p-1).
+    # At a corner containing zero, 27*score ≤ 34*∏p/(p-1); at the
+    # all-ones corner it is 47. Actual 0<Y<1 gives the latter corner
+    # positive weight, so even equality in the following cap is excluded.
+    if 34 * prod(primes) <= 54 * prod(p-1 for p in primes):
+        return
     cap = exponent_ceiling(5,r)
     lows = exponent_floors(primes)
     domains = [list(intervals(p,lows[p],cap)) for p in primes]
@@ -42,7 +49,11 @@ def remaining(q,r):
             yield bounds
 
 
-def verify(q,r):
+def count_support(q,r):
+    """Check every eligible exponent tuple; return the four stage counts.
+
+    An exact solution raises ArithmeticError before this function returns.
+    """
     primes = (5,7,q,r)
     @cache
     def table(p,other,h,lo,hi):
@@ -83,7 +94,11 @@ def verify(q,r):
                             raise ArithmeticError(f"solution: {es}")
     ResidueTable.index.cache_clear()
     table.cache_clear()
-    print(q,r,*counts,flush=True)
+    return tuple(counts)
+
+
+def verify(q,r):
+    print(q,r,*count_support(q,r),flush=True)
 
 
 if __name__ == "__main__":

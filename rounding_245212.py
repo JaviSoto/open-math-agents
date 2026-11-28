@@ -4,7 +4,6 @@ The derivation of exponent_ceiling and the integer gap is given in
 prime-power-height-245212.md. Only integers and exact rational numbers are
 used in the certificate comparisons.
 """
-from fractions import Fraction
 from functools import lru_cache
 from math import prod
 
@@ -74,8 +73,12 @@ def rounded_ranges(primes,boxes):
     lower_bits=tuple(log_bounds(p)[0] for p,_ in primes)
     exp_bits=tuple(log_bounds(h+1)[1] for h in highs)
     error_bits=log_bounds(k*(2**(k-1)+B-1))[1]
-    ys=tuple(Fraction(p,(p-1)*(lo+1)) for (p,_),lo in zip(primes,lows))
-    strict=[(P-1)*prod(ys[:i]+ys[i+1:])<1 for i,(_,P) in enumerate(primes)]
+    # y_j ≤ p_j / d_j. Compare (P_i−1)*∏_{j≠i} p_j/d_j < 1
+    # without reducing fractions. Every factor p_j and d_j is positive.
+    dens=tuple((p-1)*(lo+1) for (p,_),lo in zip(primes,lows))
+    num=prod(p for p,_ in primes)
+    den=prod(dens)
+    strict=[(P-1)*num*d < den*p for (p,P),d in zip(primes,dens)]
     # The best subset can be sought among the terminal segments sorted
     # by lower prime-power height; each trial is an independent valid veto.
     order=sorted(range(k),key=lambda i: lows[i]*lower_bits[i],reverse=True)

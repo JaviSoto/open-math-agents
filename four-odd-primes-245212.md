@@ -95,6 +95,8 @@ To replay this theorem, put `OddThreeResearch245212.lean`, `FiveSquareThree24521
 lake env bash -c 'set -e; cd "$1"; export LEAN_PATH="$PWD:$LEAN_PATH"; for m in OddThreeResearch245212 FiveSquareThree245212 FiveFaceCore245212 FiveFaces245212 FiveFaceBound245212 FiveFinite245212; do lean -o "$m.olean" "$m.lean"; done' bash /absolute/path/to/sources
 ```
 
+The remaining prime $r$ is now also known to exceed 10,000, by exact computation. The [resumable fixed-support replay](five-square-sweep-245212.md) checked all 1,224 primes $11<r\le10,000$ at $q=11$ with unrestricted positive exponents, using the effective height bound above. Across 40,773,889 prefix comparisons no exponent tuple passed the two necessary congruences. This lower bound is separate from the kernel-checked finiteness theorem.
+
 ## Reduction to ten boxes
 
 For $p^e\parallel n$ write $T(p^e)=(e+1)p^e$, $x(p,e)=W(p^e)/T(p^e)$ and $y(p,e)=\sigma(p^e)/T(p^e)$. All three divisor functions are multiplicative, so at a solution $\prod x+\prod y=2$. We have
