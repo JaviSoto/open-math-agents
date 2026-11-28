@@ -72,4 +72,6 @@ For each such triple put $N=(1+kz)W(P)+G\sigma(P)$ and $D=2zKbP-2(1+kz)W(P)-G\si
 
     python3 linear_power_family_245212.py
 
+The [finite-table Lean certificate](LinearPowerTable245212.lean) separately checks the residual box, including composite bases. It proves the positive denominator cannot divide the numerator under the displayed analytic bounds. This certificate checks the table rather than the derivation of those bounds.
+
 The [checker](linear_power_family_245212.py) builds both moments directly from their defining finite sums. It tests 114 odd primes and 2,388,870 triples. Exactly 2,043,357 denominators are positive; none divides the corresponding numerator. Thus no integer quotient, even composite, survived.

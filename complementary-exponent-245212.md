@@ -4,7 +4,7 @@ Suppose \(n=2^k p^a q^d\), where \(p,q\) are distinct odd primes, \(a\ge1\), and
 \[
  k+1\le512(d+1)^4,\qquad a+1\le32768(d+1)^6.
 \]
-In particular **a bound on either odd exponent alone gives effective finiteness**, with both primes, the other odd exponent and the power of two initially unrestricted. The [standalone Lean proof](ComplementaryResearch245212.lean) proves the intermediate inequality \(a+1\le64(d+1)^2(k+1)\) directly from the original equality for every \(d\ge1\). The final bound on \(k\) below is a written argument. The explicit [\(d=1\)](linear-power-family-245212.md) and [\(d=2\)](quadratic-power-family-245212.md) analyses exclude those two cases entirely. This argument does not exclude every \(d\).
+In particular **a bound on either odd exponent alone gives effective finiteness**, with both primes, the other odd exponent and the power of two initially unrestricted. The [standalone Lean proof](ComplementaryBoundedResearch245212.lean) derives both displayed inequalities, an explicit upper bound on the entire integer, and finiteness for every fixed \(d\ge2\), directly from the original equality. The [shorter exponent proof](ComplementaryResearch245212.lean) gives \(a+1\le64(d+1)^2(k+1)\) already for \(d\ge1\). The explicit [\(d=1\)](linear-power-family-245212.md) and [\(d=2\)](quadratic-power-family-245212.md) analyses exclude those two cases entirely. This argument does not exclude every \(d\).
 
 Let \(h=d+1\ge3,\ b=a+1,\ K=k+1,\ z=2^K,\ G=z-1,\ \delta=K/G,\ \gamma=k+\delta,\ P=p^a,\ u=p-1\). Write
 \[

@@ -41,8 +41,8 @@ private theorem divides {f g p q B C : ℕ} (hq : q.Prime) (hp : 3≤p) (pq : p<
 
 /-- A nonpositive finite-balance residual forces a nonzero integer after
 both local prime-power factors are replaced by their rational limits. -/
-theorem nonzero {p q B C k f g l : ℕ} (hq : q.Prime) (hp : 3≤p) (pq : p<q)
-    (hb : 2≤B) (hc : 16≤C) (hk : 2≤k) (small : p≤5*(k+1))
+theorem nonzero_of_positive_alpha {p q B C k f g l : ℕ} (hq : q.Prime) (hp : 3≤p) (pq : p<q)
+    (hb : 2≤B) (hc : 2≤C) (hk : 2≤k) (small : (p:ℤ)-1<(k:ℤ)*(C-1))
     (gpos : 0<g) (fg : k*g≤f) (frac : f+g=(k+1)*l) (unit : ¬q∣l)
     (actual : alpha f g p q C*(q:ℤ)^(C-1)+beta f g p q B*(p:ℤ)^(B-1)+f+
       g*(p-1)*(q-1)≤defect f g p q B C*(p:ℤ)^(B-1)*(q:ℤ)^(C-1)) :
@@ -64,10 +64,7 @@ theorem nonzero {p q B C k f g l : ℕ} (hq : q.Prime) (hp : 3≤p) (pq : p<q)
     nlinarith only [mul_nonneg (by omega : (0:ℤ)≤k-2) (by omega : (0:ℤ)≤B-1), (show (2:ℤ)≤B by exact_mod_cast hb)]
   have kbase : (k:ℤ)≤k*(B-1) := by
     nlinarith only [mul_nonneg (by positivity : (0:ℤ)≤k) (by omega : (0:ℤ)≤B-2)]
-  have kc : u<k*(C-1) := by
-    dsimp [u]
-    have hs : (p:ℤ)≤5*((k:ℤ)+1) := by exact_mod_cast small
-    nlinarith only [hs,mul_nonneg (by positivity : (0:ℤ)≤k) (by omega : (0:ℤ)≤C-16), (show (2:ℤ)≤k by exact_mod_cast hk)]
+  have kc : u<k*(C-1) := small
   have cden : 0<(C:ℤ)*v-1 := by nlinarith only [mul_nonneg (by omega : (0:ℤ)≤C-2) (by omega : 0≤v),vp]
   have bden : 0<(B:ℤ)*u-1 := by nlinarith only [mul_nonneg (by omega : (0:ℤ)≤B-2) (by omega : 0≤u),up]
   have compare (N h z : ℤ) (zd : 1≤z) (den : 0<N*z-1)
@@ -120,5 +117,17 @@ theorem nonzero {p q B C k f g l : ℕ} (hq : q.Prime) (hp : 3≤p) (pq : p<q)
   nlinarith only [actual,mul_pos asum (by positivity : (0:ℤ)<p^(B-1)),
     mul_nonneg al.le (sub_nonneg.mpr sizes),posf,
     mul_nonneg (mul_nonneg pp.le (by omega : 0≤u)) (by omega : 0≤v)]
+
+/-- The coarser range used in the original two-prime finiteness theorem. -/
+theorem nonzero {p q B C k f g l : ℕ} (hq : q.Prime) (hp : 3≤p) (pq : p<q)
+    (hb : 2≤B) (hc : 16≤C) (hk : 2≤k) (small : p≤5*(k+1))
+    (gpos : 0<g) (fg : k*g≤f) (frac : f+g=(k+1)*l) (unit : ¬q∣l)
+    (actual : alpha f g p q C*(q:ℤ)^(C-1)+beta f g p q B*(p:ℤ)^(B-1)+f+
+      g*(p-1)*(q-1)≤defect f g p q B C*(p:ℤ)^(B-1)*(q:ℤ)^(C-1)) :
+    defect f g p q B C ≠ 0 := by
+  apply nonzero_of_positive_alpha hq hp pq hb (by omega) hk _ gpos fg frac unit actual
+  have hs : (p:ℤ)≤5*((k:ℤ)+1) := by exact_mod_cast small
+  nlinarith only [hs,mul_nonneg (by positivity : (0:ℤ)≤k) (by omega : (0:ℤ)≤C-16),
+    (show (2:ℤ)≤k by exact_mod_cast hk)]
 
 end OMA.TwoOddGlobalGap245212
