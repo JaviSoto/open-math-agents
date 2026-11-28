@@ -1,0 +1,16 @@
+# Finiteness for exactly four distinct odd primes
+
+There is an explicit number \(K_4\) such that every positive solution of the original [A245212](https://oeis.org/A245212) equality with exactly four distinct odd prime divisors is at most \(K_4\). This includes odd integers. None of the four primes or exponents, or the exponent of two, is fixed. A separate conclusion holds at **every** positive odd-prime rank: the exponent of two in a solution is bounded in terms of that rank alone.
+
+Write \(n=2^k\prod p_i^{e_i}\), \(L=\max(e_i+1)\), \(r=\#\{p_i\}\). A solution has weighted score
+\[
+  F\prod_i X_i+G\prod_i Y_i=F+G,\qquad F=k2^{k+1}+1,\quad G=2^{k+1}-1,
+\]
+where \(X_i=W(p_i^{e_i})/[(e_i+1)p_i^{e_i}]\), \(Y_i=\sigma(p_i^{e_i})/[(e_i+1)p_i^{e_i}]\), and \(W(t)=\sum_{d\mid t}d\tau(d)\).
+
+1. The [dyadic height bound](fixed-rank-dyadic-height-245212.md) gives \(2^k\le P_r(L)\) for an explicit polynomial. If \(k\ge256\) and \(L\) is sufficiently large, sort the \(2r\) numbers \(p_i,p_i^{e_i}\) into \(2r+1\) disjoint intervals with rapidly increasing endpoints. One interval is empty. Its lower endpoint \(Q\) is polynomial in \(L\) for fixed \(r\). Keep each small prime power exact, omit reciprocal-power terms at intermediate primes, and replace factors at very large primes by their infinite-prime limits. Integer denominators bound the error sharply enough that the resulting rational equality is exact.
+2. The longest coordinate cannot be exact since its prime power exceeds \(Q\). Restoring a dropped base strictly increases the score. Restoring any retained base away from the longest one gives a positive increment: the longest ordinary factor is at most \(2/L\) and \(F\ge kG\). If the longest coordinate initially loses score on restoration, its possible loss is at most \(G/p_v^{e_v}\). The inequality forcing that loss also makes every other retained exponent short enough that restoring it would more than offset the loss. The two endpoint scores are equal, so only the longest base can be retained.
+3. Multiply the exact coordinates and \(2^k\) into \(h\); let \(q\) be the retained base, \(B=L\), and \(C\) the product of the dropped exponent lengths. The mode equality is exactly the [mixed divisor equation](uniform-weighted-gap-245212.md), with its strict sign. The construction gives \(h\le(B+1)^{D_r}\), and \(h\) has at most \(r+1\) prime factors. Hence \(B\) is bounded in terms of \(r\). The dyadic polynomial then bounds \(k\) at large \(k\); small \(k\) already has the bound 255.
+4. At rank four an independent [fixed-\(k\) proof](rank-four-effective-height-245212.md) bounds the entire integer. Sum its bound across the finite range of \(k\). This gives \(K_4\) without a restriction on exponent ratios.
+
+The [standalone Lean proof](FourOddAbsoluteResearch245212.lean) checks against Formal Conjectures at 9097e2f90e66d2f6244209cb1c07f7120d17ec53. The final declarations are OMA.FixedModeClose245212.original, .four, and .four_finite. A [source-only archive](four-odd-absolute-245212.tar.gz) includes the 100 modules and the hash-checked parallel replay program. The bound is theoretical: this proof does not decide whether even one of the finitely many candidates satisfies the equality.
