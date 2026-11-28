@@ -1,0 +1,31 @@
+{
+  "inputs": {
+    "witness_sha256": "e07bfbd7dca1bccd8629257e4e83cfb38826ee1588df2f051dbe8e9745efce9b",
+    "base_sha256": null,
+    "data_sha256": "3dbcf1ee6c68a9309d92a9a4091a22a4518c5103256674a48c6e71a62a5e3e94",
+    "theorem_sha256": "ce561d8cb37b99acc936c89a11c079174f8cad35de91d04e788ad2dbae49c3e0",
+    "generic_sha256": "daed3b1f233281e2fde5cc4f8605896723ab1e4f3e265f4e3defabe258155241",
+    "guard_sha256": "1dc90ce46bf65274f8c2cab7dabaec950190fe86824274c505ae751fd9066979",
+    "guard_bridge_sha256": "22387c94478c1b01249eea76d09535a266a68904aa173368728ad5862ebae4e0",
+    "fact_hashes": {
+      "CheckSize": "ad35a0f6014c072a0c3a7f6a3e37bec4edabceca694a43968d7980f7db7517b6",
+      "CheckHeights": "036bde2cf29721ceb6b1be5a9d504121aef5fb1095bb117ff74f8a877853f6de",
+      "CheckSum": "e326c17b5eaa467340b7bf47e5e2aaca7eac0e378b2f9d6ae53020eef00271ab",
+      "CheckSquare": "7386fdf2d0a01dc0fa32a824cb843c14a2de94696b8f340180cd721cbe1cdb4f",
+      "CheckGuard": "7cd2e0930e484609dccc018cc3c5da93d38e5d063471803f384569639a1fb52f"
+    },
+    "N": 524288,
+    "sum": "5242879999454308359",
+    "max_conv": "39391451232882879235406282823976",
+    "numerator": "41304930367971397977145378418433458176",
+    "denominator": "27487790688678008418765619367057272881"
+  },
+  "status": "verified",
+  "axioms": {
+    "C1aUpper.c1a_upper_verified": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ]
+  }
+}

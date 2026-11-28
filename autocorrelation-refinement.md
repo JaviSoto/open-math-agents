@@ -30,6 +30,15 @@ The full theorem was checked against `Constant1a.C1a` on the formal-conjectures 
 
 A [local perturbation argument](autocorrelation-finite-peaks.md) also excludes every single polynomial or finite trigonometric-polynomial density, and piecewise-polynomial densities whose autoconvolution has finitely many maximizers. This part is an analytic proof.
 
+**Optimizing the original grid.** Optimizing the 524,288 heights themselves, using the exact slack from Nilsson's peak for each lag, then rounding to integers, gives a stronger kernel-checked bound:
+\[
+C_{1a}\le\frac{41304930367971397977145378418433458176}{27487790688678008418765619367057272881}
+=1.50266461338359048547663764413547\ldots .
+\]
+The [integer heights](autocorrelation-warm-witness.txt.gz) have SHA-256 `cf73bccbae68b1e7da4b0aeb616830701dedad25d03c74a94f5a1b8ca2a29e83`; an independent modular transform gives the same fraction and lag 553,245. To replay the [Lean certificate](autocorrelation-polished-receipt.json), decompress to integer lines and call `write_proposal(weights, Path("fine.json"), Path("peak.json"))` from [c1a_lean_witness.py](c1a_lean_witness.py); then use the pinned verifier command above. The weights are derived from Nilsson’s input and the earlier Kirschenman and Hurst witnesses ([Kirschenman license](autocorrelation-kirschenman-license.txt), [Hurst license](autocorrelation-hurst-license.txt)).
+
+For a two-sided estimate on the **true minimum** on each grid, see the [quantitative discretization theorem](autocorrelation-grid-rate.md). In contrast to checking a single upper-bound witness, it controls how far the best possible grid value can be from the unknown continuum optimum.
+
 ## The construction
 
 Write \(a_i\ge0\) for the heights, \(0\le i<n\), \(S=\sum_i a_i>0\), \(C_k=\sum_{i+j=k}a_i a_j\), and \(M=\max_k C_k\), taking missing coefficients as zero. The objective is \(2nM/S^2\): the convolution of two equal-width interval indicators is a tent, and the sum of those tents is linear between grid knots. This is the polynomial formulation in [Matolcsi and Vinuesa, §4](https://arxiv.org/abs/0907.1379).
