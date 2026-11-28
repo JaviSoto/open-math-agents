@@ -54,11 +54,12 @@ If \(L(k)=0\), then \(h(k-u)(bu-p)=dup\). But \(\gcd(bu-p,u)=1\), so \(bu-p\mid 
   P\le2hz(K+p)q^d,\qquad 0<D(\gamma)\le3hKb/q. \tag{4}
   \]
   The first is the [prime-power divisor bound](PrimePowerDiv245212.lean) applied with cofactor \(2^kq^d\). For the second, \(q^dD(\gamma)=\gamma w(V-J)+s(S-q^d)\); apply the local estimates above.
-* **\(b\le64h^2K\).** Set \(E=2^{16h^2}\). If \(q\le5K\), (4) gives \(p^{a-1}\le4h5^d zK^{d+1}\), which suffices since \(K\le2^K\). If \(p\le5K\), then \(L(\gamma)>0\): for \(h\gamma-u>0\) use (3) and \(D(\gamma)>0\); otherwise use \(hbu(u-\gamma)>(u-h\gamma)p\). The denominator of \(L(\gamma)\) divides \(G\). Either \(P\le2(h+5)zK\), or (3) gives \(D(\gamma)\ge1/(2Gu^2)\), so \(q\le6hKbGu^2\le150hzbK^3\). In both cases
+* **\(b\le64h^2K\).** Set \(E=2^{16h^2}\). If \(q\le5K\), use \(K+p\le2Kp\) in (4) and cancel one \(p\) to get \(p^{a-1}\le4h5^d zK^{d+1}\).
+  If \(p\le5K\), then \(L(\gamma)>0\): for \(h\gamma-u>0\) use (3) and \(D(\gamma)>0\); otherwise use \(hbu(u-\gamma)>(u-h\gamma)p\). The denominator of \(L(\gamma)\) divides \(G\). Either \(P\le2hzK\), or \(D(\gamma)\ge1/(2Gu^2)\) by (3), since \(h\gamma-u\le hK\). In the latter case \(q\le6hKbGu^2\le150hzbK^3\); now \(K+p\le6K\) in (4) gives \(P\le12h(150h)^d z^h b^d K^{3d+1}\) without canceling \(p\). The common bound is therefore
   \[
-  P\le E z^h b^d K^{3d+1},
+  2^{a-1}\le p^{a-1}\le E z^h b^d K^{3d+1},
   \]
-  since \(12h(150h)^d\le E\). For \(b\ge16h^2\), \(d\log_2 b\le d\sqrt b\le b/4\le a/2\). Thus \(a/2\le 16h^2+(4d+2)K\), giving the claimed bound.
+  since \(12h(150h)^d\le E\). For \(b\ge16h^2\), \(d\log_2 b\le d\sqrt b\le b/4\). Taking logarithms and using \(\log_2 K\le K\) gives \(3b/4\le 2+16h^2+(4d+2)K\), hence \(b\le64h^2 K\). The bound is immediate when \(b<16h^2\).
 * **\(P\ge z^{1/h}/(6hKb)\).** The rational \(D(k)=D(\gamma)+h\delta(w-b)>0\) has denominator dividing \(P\). If \(2hKbP\le G\), then \(D(\gamma)\ge1/(2P)\) and \(q\le6hKbP\). The original equality modulo \(z\) gives \(z\mid W(P)V-\sigma(P)S\), a positive number. Thus \(z<W(P)V\le3h b P q^d\le(6hKbP)^h\). In the other case \(P>G/(2hKb)\ge z/(4hKb)\).
 
 ## Bounding \(K\)

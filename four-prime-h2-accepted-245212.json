@@ -1,0 +1,28 @@
+{
+  "source": "proofs/OeisA245212.conjecture.R1.H1.R1.H2.R1.H2.R1.H2.lean",
+  "sourceBytes": 520262,
+  "checker": {
+    "file": "proofs/OeisA245212.conjecture.R1.H1.R1.H2.R1.H2.R1.H2.lean",
+    "type": "step",
+    "problem": "OeisA245212.conjecture.R1.H1.R1.H2.R1.H2.R1.H2",
+    "ok": true,
+    "kind": "open",
+    "polarity": "proof",
+    "theorem": "OMA.solution",
+    "imports": "OMAReductions.R_OeisA245212_conjecture_R1_H1_R1_H2_R1_H2_R1",
+    "errors": [],
+    "needsReduction": "OeisA245212.conjecture.R1.H1.R1.H2.R1.H2.R1",
+    "verdict": "accepted",
+    "reason": "kernel accepted; axioms within propext, Classical.choice, Quot.sound",
+    "log": "'OMA.solution' depends on axioms: [propext, Classical.choice, Quot.sound]"
+  },
+  "metrics": {
+    "seconds": 1483.46,
+    "peakMiB": 3701.8,
+    "limitMiB": 10240,
+    "memoryStop": false,
+    "samples": 3608,
+    "exit": 0,
+    "sha256": "3353e6013c215b6fe045dc2cbf1b1224ef0260f8e5f4c4a7c09c160d6e3e1bc8"
+  }
+}
