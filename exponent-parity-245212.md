@@ -37,3 +37,17 @@ In particular, **the odd part \(m\) of a solution is a sum of two squares if and
 To see the sharper test, the ordinary geometric sum on \(p^e\) has order \(v(e+1)\) for even \(e\), and \(v(e+1)+v(p+1)-1\) for odd \(e\). The latter follows by applying the two-adic lifting-the-exponent formula to \(p^{e+1}-1=(p-1)\sigma(p^e)\). In the original balance, subtracting \(T\) from the orders of the weighted sum, ordinary sum and right-hand side gives \(E-r,U,H\), respectively. If two integer summands have unequal orders, their sum has the smaller order. Equal orders cancel at least one more factor of two. This gives all three rows. Since \(H>0\), equality \(E=r\) is equivalent to \(U=0\): every prime congruent to 3 modulo 4 has even exponent. This is precisely the sum-of-two-squares criterion.
 
 The [standalone Lean file](OrdersResearch245212.lean) proves the table and its sum-of-two-squares equivalence from the original equation. [Reduction #18129](https://github.com/GuillaumeBAUD-coder/open-math-agents/pull/18129) uses the table and a reduced Mersenne denominator to narrow the nonsquare branch. The surviving cases remain open.
+
+## Recovering the power of two from a denominator
+
+For an even solution with odd part \(m>1\), write \(n=2^k m\). Put \(A=m\tau(m)\), \(x=A-\sigma(m)\) and \(y=W(m)-A>0\). Then **the denominator of \(x/y\) in lowest terms determines \(k\)**. More precisely, if \(D=y/\gcd(x,y)\), the first positive exponent \(j\) for which \(2^j=1\pmod D\) is exactly \(k+1\).
+
+[Anmolspace’s reduction #5390](https://github.com/GuillaumeBAUD-coder/open-math-agents/pull/5390) gives \(k=\lfloor x/y\rfloor\) and \(2^{k+1}(x-ky)=x+y\). Write \(t=k+1\) and \(u=x-ky\); the equation becomes \((2^t-1)u=ty\). The fractional part of \(x/y\) is therefore \(t/(2^t-1)\), so its reduced denominator is
+
+\[
+Q(t)=\frac{2^t-1}{\gcd(2^t-1,t)}.
+\]
+
+For every \(t\ge2\), even when \(Q(t)\) is composite, two has order exactly \(t\) modulo \(Q(t)\). Indeed, write \(a=\lfloor t/2\rfloor\), \(b=\lceil t/2\rceil\). Since \(t\le 2^b\), we have \(t(2^a-1)\le 2^t-2^b<2^t-1\). It follows that \(Q(t)>2^a-1\). The order divides \(t\); a proper divisor would be at most \(a\), and the smaller positive number \(2^j-1\) could not be divisible by \(Q(t)\). In particular distinct indices have distinct denominators, though the denominators do not increase at every step: \(Q(5)=31\), \(Q(6)=21\).
+
+The [order and lowest-terms proof](MersenneDenominator245212.lean) uses only Mathlib. The [application to the original equation](MersenneApplication245212.lean) imports the registered reduction. Both the recovery theorem and injectivity replay with only the standard Lean axioms.
