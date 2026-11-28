@@ -58,7 +58,7 @@ individual exclusions.
 
 In the research workspace, generate the single-import source:
 
-    python3 rank_three_power_source_245212.py RankThreeThirtyTwoLargeResearch245212.lean
+    python3 rank_three_power_source_245212.py --fast RankThreeThirtyTwoFastResearch245212.lean
 
 The entry point is `OMA.RankThreeThirtyTwoLarge245212.original`. Its
 hypotheses on the original input n are positivity, `n.factorization 2=5`,
@@ -71,3 +71,31 @@ for the thirteen remaining prime-pair families. The latter accepts
 research workspace with its pinned helper modules available.
 
 The least-prime 3 and 5 cases at exact dyadic order five are separate.
+
+## Shortening the integer tests
+
+For a fixed cofactor h write A=W(h), S=σ(h), H=2hτ(h). For the two
+remaining prime bases u and v, put U=u−1, V=v−1 and D=Auv−HUV.
+Suppose D>0 and the exponents j,l satisfy j≤l. Let y,z be the normalized
+ordinary divisor moments at uʲ and vˡ. The balance then says
+
+    D = Avy + Auz − (A+SUV)yz.
+
+The geometric series gives 1≤(j+1)y≤u/U and (j+1)z≤v/V. Thus
+D U V(j+1)≤Auv(U+V). When A+SUV≤AU(j+1), we also have
+Av≤D(j+1). These inequalities bound j by two integer intervals whose
+endpoints require no prime-power calculations. On them the check first
+uses v^min(3,j) | W(huʲ)−(v−1)σ(huʲ), then applies the exact final
+exponent reconstruction where that congruence holds.
+
+For the unbounded-last-prime prefixes one can improve the old test as
+well. If E=Au−HU>0, then the strict weighted-moment inequality implies
+E<Ay. Consequently (j+1)UE<Au, a strict integer test. On the eight
+unrestricted prefixes this cuts 34,802 upper-side exponent positions
+to 19,628, including 9,298 to 5,423 in the largest individual row.
+
+The combined 516,423-byte `RankThreeThirtyTwoFastResearch245212.lean`
+passed the pinned Lean kernel in 1,042.08 seconds, using 2,332 MiB of
+physical memory. The only axioms of `OMA.RankThreeThirtyTwoLarge245212.original`
+are `propext`, `Classical.choice`, and `Quot.sound`. SHA-256:
+`39d92937eeeb64fc10b6041b24915a2b54802a06e769beff6c1e18402711cdd9`.
