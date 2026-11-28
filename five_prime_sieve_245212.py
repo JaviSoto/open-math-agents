@@ -81,8 +81,9 @@ def scan(i, start, stop, ceiling, *, primes=PRIMES, floors=FLOORS, three_exponen
                 exps = {i:u,j:v,r:er,s:es}
                 tested += 1
                 for p in (i,j):
-                    pairs = [factors(p,q,e) for q,e in exps.items() if q != p]
-                    if (w0*prod(w for w,_ in pairs)-z0*(p-1)*prod(z for _,z in pairs))%moduli[p]:
+                    m = p**min(exps[p],20)
+                    pairs = [residues(q,e,m) for q,e in exps.items() if q != p]
+                    if (w0*prod(w for w,_ in pairs)-z0*(p-1)*prod(z for _,z in pairs))%m:
                         break
                 else:
                     survivors += 1

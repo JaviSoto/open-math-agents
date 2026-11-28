@@ -69,6 +69,18 @@ All denominators here are positive. Starting at $h=1$, apply this three times, u
 
 The [Python replay](five_square_cases_245212.py) computes those bounds as exact fractions and checks all three supports, using $W(3^2)=34$ and $\sigma(3^2)=13$ in the cofactor congruences. Only two tuples pass the first pair of prime tests, both for $r=23$; neither passes the remaining tests. Run `python3 five_square_cases_245212.py` to reproduce the calculation. The [C++ replay](five_prime_replay_245212.cpp) accepts 23, 29, or 31 as an argument for these same supports. The table of possible supports above is Lean-verified; this further elimination uses the written height argument and exact computation.
 
+**The $q=17$ row is also excluded.** The same inequalities and the same Python cross-prime sieve apply to every permitted $r=19,23,29,31,37$. With $q=17$, the inputs and box counts are:
+
+| $r$ | Floors on exponents of $5,7,17,r$ | Height bound | Two-exponent boxes |
+|---:|---|---:|---:|
+| 19 | 8, 5, 2, 1 | 10,336 | 661,500 |
+| 23 | 12, 8, 3, 2 | 11,616 | 1,161,492 |
+| 29 | 24, 16, 6, 3 | 13,536 | 2,652,628 |
+| 31 | 31, 20, 7, 4 | 14,176 | 3,514,856 |
+| 37 | 92, 61, 23, 10 | 18,976 | 14,110,928 |
+
+For this family use `python3 five_square_cases_245212.py --fourth 17`. After recovering the candidate exponents of the two unfixed primes, the replay tests the remaining two prime congruences at the *actual* candidate exponents (capped at 20, which only weakens the rejection). No tuple passed all four. Thus with five odd primes and exactly two factors of three, **$3,5,7$ must all divide the number, and its fourth prime is 11 or 13**. The complete conjecture and these last two families remain open. The $q=17$ exclusions are computational, not Lean certificates.
+
 ## Reduction to ten boxes
 
 For $p^e\parallel n$ write $T(p^e)=(e+1)p^e$, $x(p,e)=W(p^e)/T(p^e)$ and $y(p,e)=\sigma(p^e)/T(p^e)$. All three divisor functions are multiplicative, so at a solution $\prod x+\prod y=2$. We have

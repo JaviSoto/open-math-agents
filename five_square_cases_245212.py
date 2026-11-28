@@ -1,7 +1,7 @@
-"""Exact finite replay for the 3^2, 5, 7, 19, r branch of A245212."""
+"""Exact finite replay for bounded 3^2, 5, 7, q, r branches of A245212."""
+from argparse import ArgumentParser
 from fractions import Fraction as F
 from math import ceil, prod
-from sys import argv
 from five_prime_sieve_245212 import scan
 from rounding_245212 import exponent_ceiling
 
@@ -24,9 +24,9 @@ def exponent_floors(primes):
     return bounds
 
 
-def run(r):
-    assert r in (23,29,31)
-    primes = (5,7,19,r)
+def run(q,r):
+    primes = (5,7,q,r)
+    assert len(set(primes))==4 and primes==tuple(sorted(primes))
     bounds = exponent_floors(primes)
     ceiling = exponent_ceiling(5,r)
     # Lower bound on X at exponent 5*floor using the infinite geometric sum.
@@ -35,9 +35,16 @@ def run(r):
     for p in primes:
         result = scan(p,bounds[p],5*bounds[p]-1,ceiling,primes=primes,
                       floors=bounds,three_exponent=2,verbose=False)
-        print(r,p,bounds[p],ceiling,*result,flush=True)
+        print(q,r,p,bounds[p],ceiling,*result,flush=True)
 
 
 if __name__ == "__main__":
-    for r in map(int,argv[1:] or (23,29,31)):
-        run(r)
+    families = {17:(19,23,29,31,37),19:(23,29,31)}
+    parser = ArgumentParser(description=__doc__)
+    parser.add_argument("--fourth", type=int, choices=families, default=19)
+    parser.add_argument("last", type=int, nargs="*")
+    args = parser.parse_args()
+    for r in args.last or families[args.fourth]:
+        if r not in families[args.fourth]:
+            parser.error("last prime outside the chosen finite family")
+        run(args.fourth,r)
